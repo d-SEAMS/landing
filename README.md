@@ -1,3 +1,13 @@
+# About
+
+The landing page. Will eventually link to tutorials as well. The documenation is
+managed with `doxygen`, and hosted on a subdomain.
+
+## Credits
+
+I have retained the entire `readme` form the original theme below:
+
+```
 Paradigm Shift by HTML5 UP
 html5up.net | @ajlkn
 Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
@@ -29,3 +39,4 @@ Credits:
 	Other:
 		jQuery (jquery.com)
 		Responsive Tools (github.com/ajlkn/responsive-tools)
+```
