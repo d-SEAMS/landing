@@ -239,6 +239,21 @@ code, pre {
   border: 1px solid var(--line);
 }
 
+.walk {
+  max-width: 68rem;
+  margin: 0 auto;
+  padding: 0 1.5rem 3.2rem;
+}
+
+.walk .lede { margin-bottom: 1rem; }
+
+.cast {
+  background: var(--ink);
+  border: 1px solid var(--line);
+  padding: 0.5rem;
+  overflow: auto;
+}
+
 .cite p { max-width: 46rem; color: var(--muted); }
 
 .foot {
