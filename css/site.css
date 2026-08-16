@@ -370,6 +370,11 @@ code, pre {
 
 .foot p { margin: 1rem 0 0; }
 
+.foot-antics {
+  font-size: 0.88em;
+  color: var(--muted);
+}
+
 @media (max-width: 860px) {
   .hero, .cards, .snips, .two, .stills, .then-now, .split-arms {
     grid-template-columns: 1fr;
