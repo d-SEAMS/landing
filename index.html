@@ -1,140 +1,291 @@
 <!DOCTYPE html>
-<html lang="en">
+<!--
+        Paradigm Shift by HTML5 UP
+        html5up.net | @ajlkn
+        Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
 <head>
+  <title>d-SEAMS Home</title>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>d-SEAMS</title>
-  <meta name="description" content="Classify ice in molecular-dynamics trajectories. C++ engine, Python Frame API, Lua/Fennel library, periodic k-nearest neighbours.">
-  <link rel="icon" href="favicon.ico" sizes="any">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=Source+Serif+4:opsz,wght@8..60,500;8..60,650&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/site.css">
+  <meta name="viewport" content=
+  "width=device-width, initial-scale=1, user-scalable=no">
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <link rel="stylesheet" href="assets/css/main.css">
+  <!-- Real Favicon Generator -->
+  <link rel="apple-touch-icon" sizes="180x180" href=
+  "/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href=
+  "/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href=
+  "/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color=
+  "#5bbad5">
+  <meta name="msapplication-TileColor" content="#00aba9">
+  <meta name="theme-color" content="#ffffff">
 </head>
-<body>
-  <div class="lattice" aria-hidden="true"></div>
-  <header class="bar">
-    <a class="bar-brand" href="/">d-SEAMS</a>
-    <nav class="bar-nav">
-      <a href="https://docs.dseams.info">docs</a>
-      <a href="https://wiki.dseams.info">wiki</a>
-      <a href="https://github.com/d-SEAMS">github</a>
-    </nav>
-  </header>
-
-  <main>
-    <section class="hero">
-      <img class="hero-cage" src="images/logo/dSeamsLogo.png" width="343" height="358" alt="d-SEAMS hexagonal ice cage">
-      <div class="hero-copy">
-        <p class="eyebrow">Deferred Structural Elucidation Analysis for Molecular Simulations</p>
-        <h1>Classify ice in MD trajectories.</h1>
-        <p class="lede">A C++ engine for CHILL+ labels and HC / DDC cage membership, with Python and Lua front ends on the same library.</p>
-        <p class="actions">
-          <a class="btn btn-primary" href="https://docs.dseams.info">Read the docs</a>
-          <a class="btn" href="https://github.com/d-SEAMS/seams-core">seams-core</a>
-        </p>
+<body class="is-preload">
+  <!-- Wrapper -->
+  <div id="wrapper">
+    <!-- Intro -->
+    <section class="intro">
+      <header>
+        <h1>d-SEAMS</h1>
+        <h2>Deferred Structural Elucidation Analysis for Molecular
+        Simulations</h2><!-- <p> -->
+        <!--   A free responsive site template designed by -->
+        <!--   <a href="https://twitter.com/ajlkn">@ajlkn</a> / -->
+        <!--   <a href="https://html5up.net">HTML5 UP</a> -->
+        <!-- </p> -->
+        <img src="https://builtwithnix.org/badge.svg" style=
+        "width:40%"><br>
+        <a href="https://docs.dseams.info/" style=
+        "border-bottom:none;"><img src=
+        "https://img.shields.io/badge/Docs%20By-Doxygen-blue?style=for-the-badge&amp;logo=travis"
+        style="width:50%;"></a>
+        <a href="https://wiki.dseams.info/" style=
+        "border-bottom:none;"><img src=
+        "https://img.shields.io/badge/user-wiki-lightgrey?style=for-the-badge"
+        style="width:30%;"></a>
+        <p>Representative image of various ice types (Ic, Ih and
+        Interfacial) forming on a surface</p>
+        <ul class="actions">
+          <li>
+            <a href="#first" class="arrow scrolly"><span class=
+            "label">Next</span></a>
+          </li>
+        </ul>
+      </header>
+      <div class="content">
+        <span class="image fill" data-position="center"><img src=
+        "images/dSEAMS/image7.png" alt=""></span>
       </div>
-    </section>
-
-    <section class="suite" id="suite">
-      <h2>The suite</h2>
-      <ul class="cards">
-        <li>
-          <a href="https://docs.dseams.info">
-            <img src="images/logo/dSeamsLogo.png" width="72" height="75" alt="">
-            <h3>seams-core</h3>
-            <p><code>libyodaLib</code> and the <code>seams</code> CLI.</p>
-          </a>
-        </li>
-        <li>
-          <a href="https://d-seams.github.io/PydSEAMSlib/">
-            <img src="images/logo/pydseams.png" width="72" height="72" alt="">
-            <h3>pydseams</h3>
-            <p>Python <code>Frame</code> API on <code>yoda</code>.</p>
-          </a>
-        </li>
-        <li>
-          <a href="https://d-seams.github.io/yodaStruct/">
-            <img src="images/logo/dseams.png" width="72" height="72" alt="">
-            <h3>dseams</h3>
-            <p>Lua and Fennel. <code>require("dseams")</code>.</p>
-          </a>
-        </li>
-        <li>
-          <a href="https://github.com/d-SEAMS/linkcell">
-            <img src="images/logo/linkcell.svg" width="72" height="72" alt="">
-            <h3>linkcell</h3>
-            <p>Periodic linked-cell k-nearest neighbours.</p>
-          </a>
-        </li>
-      </ul>
-    </section>
-
-    <section class="use" id="use">
-      <h2>Call it</h2>
-      <div class="snips">
+    </section><!-- Section -->
+    <section id="first">
+      <header>
+        <h2>About</h2>
+        <p>Developed actively at the <a href=
+        "http://home.iitk.ac.in/~jayantks/">Computational Nano
+        Science Group of IIT Kanpur</a>, under the aegis of Jayant
+        K. Singh and is being prepared for publication.</p>
+      </header>
+      <div class="content">
+        <p><strong>d-SEAMS is a collection</strong> of analysis
+        tools for molecular simulations. It has been implemented as
+        a High Performance Cluster enabled engine in C++, with
+        extensions via the Lua scripting interface. The code sheds
+        light on the structures from simulation trajectories, in
+        terms of their topology and it has been tailored for the
+        analysis of nucleating systems. The framework is meant to
+        be interfaced to a large variety of external tools and
+        software, including R and other libraries. It is also the
+        first and at-present only scientific analysis tool to use
+        reproducible builds via nix.</p>
+        <p><a href="https://docs.dseams.info"><strong>The full
+        documentation and installation instructions are
+        here:</strong> https://docs.dseams.info</a></p>
         <figure>
-          <figcaption>CLI</figcaption>
-          <pre><code>seams read water.lammpstrj
-seams chill-plus water.lammpstrj --cutoff 3.5
-seams cages water.lammpstrj</code></pre>
-        </figure>
-        <figure>
-          <figcaption>Python</figcaption>
-          <pre><code>import pydseams as ds
-frame = ds.read("water.lammpstrj")
-print(frame.chill_plus())
-print(frame.cages())</code></pre>
-        </figure>
-        <figure>
-          <figcaption>Lua</figcaption>
-          <pre><code>local dseams = require("dseams")
-local cloud = dseams.read("water.lammpstrj")
-print(dseams.chill_plus(cloud, {cutoff = 3.5}))</code></pre>
+          <img src="images/dSEAMS/superRainbowGraph.png" alt=
+          "rainbow" style="width:100%">
+          <figcaption>
+            Radial Distribution Plots of a bulk system at various
+            temperatures.
+          </figcaption>
         </figure>
       </div>
-    </section>
-
-    <section class="science" id="classifiers">
-      <h2>Two classifiers</h2>
-      <div class="two">
-        <article>
-          <h3>CHILL+</h3>
-          <p>Four-neighbour star. Labels cubic, hexagonal, interfacial, clathrate, and water. It does not assign cage membership.</p>
-        </article>
-        <article>
-          <h3>Cages</h3>
-          <p>Hexagonal cages (HC) are ice Ih. Double-diamond cages (DDC) are ice Ic. Everything else is water on that score.</p>
-        </article>
+    </section><!-- Section -->
+    <section id="citation">
+      <header>
+        <h2>Citation</h2>
+      </header>
+      <div class="content">
+              <ul>
+                  <li><p>This has been published at the <a href="https://doi.org/10.1021/acs.jcim.0c00031">Journal of Chemical Information and Modeling
+                      (JCIM)</a></p>
+                  </li>
+                  <li><p>You may also read <a href="https://arxiv.org/abs/1909.09830">the preprint on arXiv</a></p>
+                  </li>
+              </ul>
+              <p>If you use this software please cite the following:</p>
+              <pre><code>Goswami, R., Goswami, A., &amp; Singh, J. K. (<span class="hljs-number">2020</span>). d-SEAMS: Deferred Structural Elucidation Analysis <span class="hljs-keyword">for</span> Molecular Simulations. Journal <span class="hljs-keyword">of</span> Chemical Information <span class="hljs-keyword">and</span> Modeling. https:<span class="hljs-comment">//doi.org/10.1021/acs.jcim.0c00031</span></code></pre>
       </div>
-      <div class="stills">
-        <figure>
-          <img src="images/dSEAMS/image7.png" alt="Cubic, hexagonal, and interfacial ice forming on a surface">
-          <figcaption>Ic, Ih, and interfacial ice on a surface.</figcaption>
-        </figure>
-        <figure>
-          <img src="images/dSEAMS/hcRings.jpg" alt="Hexagonal ice as a topological ring network">
-          <figcaption>Hexagonal ice as a ring network.</figcaption>
-        </figure>
+    </section><!-- Section -->
+    <section>
+      <header>
+        <h2>Software Features</h2>
+      </header>
+      <div class="content">
+        <p><strong>d-SEAMS, as a toolkit</strong> has features
+        intended both for long-term mantainance and extensibility,
+        but also high performance insightful execution.</p>
+        <ul class="feature-icons">
+          <li class="icon fa-laptop">Embedded Lua interpreter</li>
+          <li class="icon fa-bolt">High Performance Cluster
+          Ready</li>
+          <li class="icon fa-signal">Plotting plugins</li>
+          <li class="icon fa-gear">YAML input</li>
+          <li class="icon fa-map-marker">Deterministic
+          OS-Independent Execution (nix)</li>
+          <li class="icon fa-code">C++ engine with native LAMMPS
+          support</li>
+        </ul>
       </div>
-    </section>
-
-    <section class="cite" id="cite">
-      <h2>Cite</h2>
-      <p>
-        Goswami, R.; Goswami, A.; Singh, J. K.
-        <cite>d-SEAMS: Deferred Structural Elucidation Analysis for Molecular Simulations.</cite>
-        <i>J. Chem. Inf. Model.</i> <b>2020</b>.
-        <a href="https://doi.org/10.1021/acs.jcim.0c00031">10.1021/acs.jcim.0c00031</a>
-        ·
-        <a href="https://arxiv.org/abs/1909.09830">arXiv:1909.09830</a>
-      </p>
-    </section>
-  </main>
-
-  <footer class="foot">
-    <p>MIT. Trajectories on <a href="https://figshare.com/projects/d-SEAMS_Datasets/73545">figshare</a>. Records in the <a href="https://zenodo.org/communities/d-seams/">Zenodo community</a>.</p>
-    <p>Prefer <a href="https://github.com/d-SEAMS">GitHub issues</a>.</p>
-  </footer>
+    </section><!-- Section -->
+    <section>
+      <header>
+        <h2>Plugin Overview</h2>
+      </header>
+      <div class="content">
+        <p><strong>d-SEAMS, as a scientific tool</strong> was
+        initially designed to overcome analysis bottlenecks for
+        nucleating systems simulated with LAMMPS.</p>
+        <ul class="feature-icons">
+          <li class="icon fa-area-chart">Radial Distribution
+          Function (+in-plane)</li>
+          <li class="icon fa-line-chart">Mean First Passage
+          Method</li>
+          <li class="icon fa-bar-chart">Connectivity Analysis</li>
+          <li class="icon fa-pie-chart">Ice Type Distribution
+          (CHILL, CHILL+)</li>
+        </ul>
+      </div>
+    </section><!-- Section -->
+    <section>
+      <header>
+        <h2>First Installation</h2>
+      </header>
+      <div class="content">
+        <p><a href="https://docs.dseams.info">The documentation and
+        README</a> are very detailed, but given the nature of the
+        nix setup, the following first installation video is
+        pertinent and serves as a brief tutorial.</p>
+        <script id="asciicast-4KAQce0vldH90WcANWBDACSwD" src=
+        "https://asciinema.org/a/4KAQce0vldH90WcANWBDACSwD.js"
+        async></script>
+      </div>
+    </section><!-- Section -->
+    <section>
+      <header>
+        <h2>Image Overview</h2>
+        <p>Some sample images encountered during use.</p>
+      </header>
+      <div class="content">
+        <div class="gallery">
+          <figure>
+            <img src="images/dSEAMS/hcRings.jpg" alt="Rings" style=
+            "width:100%">
+            <figcaption>
+              Pure hexagonal ice in a topological network.
+            </figcaption>
+          </figure>
+          <figure>
+            <img src="images/dSEAMS/finalSeed.png" alt="Seed"
+            style="width:80%">
+            <figcaption>
+              Ice type analysis interfaced with an ovito plugin.
+            </figcaption>
+          </figure>
+          <figure>
+            <img src="images/dSEAMS/configYML.png" alt="YAML"
+            style="width:100%">
+            <figcaption>
+              Working with YAML options.
+            </figcaption>
+          </figure>
+          <figure>
+            <img src="images/dSEAMS/luaFunc.png" alt="YAML" style=
+            "width:100%">
+            <figcaption>
+              Leveraging lua modules without recompilation
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </section><!-- Section -->
+    <section>
+      <header>
+        <h2>Get The Code</h2>
+      </header>
+      <div class="content">
+        <p><strong>Contributors welcome!</strong> As a FOSS
+        project, we welcome contributions in any form, especially
+        documentation and analysis methods.</p>
+        <ul class="actions">
+          <li>
+            <a href="https://github.com/d-seams/seams-core" class=
+            "button primary large">Core Readme</a>
+          </li>
+          <li>
+            <a href="https://github.com/d-seams" class=
+            "button large">Project Organization</a>
+          </li>
+        </ul>
+      </div>
+    </section><!-- Section -->
+    <section>
+      <header>
+        <h2>Get in touch</h2>
+      </header>
+      <div class="content">
+        <p><strong>We prefer GitHub issues.</strong> However, for
+        joint research endeavors, use the form below.</p>
+        <form action="https://formspree.io/rohit.goswami@aol.com"
+        method="post">
+          <div class="fields">
+            <div class="field half">
+              <input type="text" name="name" id="name" placeholder=
+              "Name">
+            </div>
+            <div class="field half">
+              <input type="email" name="email" id="email"
+              placeholder="Email">
+            </div>
+            <div class="field">
+              <textarea name="message" id="message" placeholder=
+              "Message" rows="7"></textarea>
+            </div>
+          </div>
+          <ul class="actions">
+            <li><input type="submit" value="Send Message" class=
+            "button primary"></li>
+          </ul>
+        </form>
+      </div>
+      <footer>
+        <ul class="items">
+          <li>
+            <h3>Email</h3><a href="#">cnsiitk@gmail.com</a>
+          </li>
+          <li>
+            <h3>Address</h3><span>Distributed on GitLab, GitHub,
+            and physical PCs in IITK</span>
+          </li>
+          <li>
+            <h3>Elsewhere</h3>
+            <ul class="icons">
+              <li>
+                <a href="https://github.com/d-seams/" class=
+                "icon fa-github"><span class=
+                "label">GitHub</span></a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </footer>
+    </section><!-- Copyright -->
+    <div class="copyright">
+      © d-SEAMS core team. All rights reserved. Design: <a href=
+      "https://html5up.net">HTML5 UP</a>. Adapted by <a href=
+      "https://grimoire.science">Rohit Goswami (HaoZeke)</a>
+    </div>
+  </div><!-- Scripts -->
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/js/jquery.scrolly.min.js"></script>
+  <script src="assets/js/browser.min.js"></script>
+  <script src="assets/js/breakpoints.min.js"></script>
+  <script src="assets/js/util.js"></script>
+  <script src="assets/js/main.js"></script>
 </body>
 </html>
