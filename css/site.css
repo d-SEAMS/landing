@@ -223,6 +223,31 @@ h3 { font-size: 1.2rem; }
   max-width: 48rem;
 }
 
+.bench {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.25rem 0 0;
+  font-size: 0.92rem;
+  background: var(--card);
+}
+
+.bench caption {
+  caption-side: bottom;
+  text-align: left;
+  padding: 0.6rem 0 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.bench th, .bench td {
+  padding: 0.45rem 0.7rem;
+  border-bottom: 1px solid var(--line);
+  text-align: right;
+}
+
+.bench th:first-child, .bench td:first-child { text-align: left; }
+.bench thead th { font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+
 .cards {
   list-style: none;
   margin: 1rem 0 0;

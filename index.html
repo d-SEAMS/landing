@@ -29,7 +29,7 @@
       <div class="hero-copy">
         <p class="eyebrow">Deferred Structural Elucidation Analysis for Molecular Simulations</p>
         <h1>Classify ice in MD trajectories.</h1>
-        <p class="lede">Version 2 is one C++ engine and three packages. The 2020 <code>yodaStruct</code> binary is gone. Python is Ruhila&nbsp;S's <code>pydseams</code>. Lua is <code>require("dseams")</code>.</p>
+        <p class="lede">Version 2 is one C++ engine and three packages. The 2020 <code>yodaStruct</code> binary is gone. 2.x has an expanded team.</p>
         <p class="actions">
           <a class="btn btn-primary" href="https://docs.dseams.info">Read the docs</a>
           <a class="btn" href="https://github.com/d-SEAMS/seams-core">seams-core</a>
@@ -40,42 +40,30 @@
     <section class="v2" id="v2">
       <p class="eyebrow">2.2</p>
       <h2>One engine. Three packages.</h2>
-      <p class="lede">A binding that lived in the engine tree would force every C++ user to take that language's toolchain, and every wheel to rebuild the same library. Version 2 splits the product. The classifier is <code>libyodaLib</code>. Each language takes it as a Meson subproject and ships on its own schedule. Nobody vendors a second engine.</p>
+      <p class="lede">The classifier is <code>libyodaLib</code>. Each language takes it as a Meson subproject. 2.x has an expanded team; names for the Python binding live on the <a href="https://d-seams.github.io/PydSEAMSlib/">pydseams</a> book.</p>
       <div class="then-now">
         <article>
-          <h3>2020</h3>
-          <p>One executable named <code>yodaStruct</code>. YAML plus Lua in a single tree. JCIM paper.</p>
+          <h3>1.x / 2020</h3>
+          <p>One <code>yodaStruct</code> executable. YAML plus Lua. JCIM paper.</p>
         </article>
         <article>
           <h3>2.x</h3>
-          <p><code>seams</code> on the engine. <code>pydseams</code> and <code>dseams</code> in their own repos. <code>linkcell</code> for periodic k-nearest neighbours.</p>
+          <p><code>seams</code> CLI. <code>pydseams</code> and <code>dseams</code> in their own repos. <code>linkcell</code> for periodic kNN.</p>
         </article>
       </div>
-      <div class="split" aria-label="Repository split">
-        <div class="split-engine">
-          <span class="split-kicker">engine</span>
-          <a href="https://github.com/d-SEAMS/seams-core">seams-core</a>
-          <span><code>libyodaLib</code> / <code>seams</code></span>
-        </div>
-        <div class="split-arms">
-          <a href="https://d-seams.github.io/PydSEAMSlib/">
-            <span class="split-kicker">Python</span>
-            <strong>pydseams</strong>
-            <span>Ruhila S / PSF GSoC 2023</span>
-          </a>
-          <a href="https://docs.dseams.info">
-            <span class="split-kicker">CLI</span>
-            <strong>seams</strong>
-            <span>read / chill-plus / cages</span>
-          </a>
-          <a href="https://d-seams.github.io/yodaStruct/">
-            <span class="split-kicker">Lua / Fennel</span>
-            <strong>dseams</strong>
-            <span><code>require("dseams")</code></span>
-          </a>
-        </div>
-      </div>
-      <p class="credit"><code>pydseams</code> started as <code>pyseams</code> in PSF GSoC 2023. Ruhila S is the primary author. Helpers (<code>Frame</code>, suffix I/O, ASE, solvis) stay in Python. The compiled surface is <code>pydseams.yoda</code>. Lua helpers stay in yodaStruct. The 2020 binary name survives only as that compiled surface and as <code>require("yoda")</code>, which still resolves to <code>dseams</code>.</p>
+      <table class="bench">
+        <caption>Elja exclusive Xeon Platinum 8358, job 1785712. Base <code>1c8efa3</code> vs tip <code>13c95ce</code>. Times in ms, best-of. Manifest: <code>repro/reference/paper_manifest-elja-1785712.json</code>.</caption>
+        <thead>
+          <tr><th>Stage</th><th>N</th><th>1.x scan</th><th>2.x</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>neighbour list</td><td>32000</td><td>862.2</td><td>43.5</td></tr>
+          <tr><td>ring index</td><td>32000</td><td>5955.5</td><td>42.4</td></tr>
+          <tr><td>CHILL+</td><td>32000</td><td>111.5</td><td>44.8</td></tr>
+          <tr><td>six-rings</td><td>4096</td><td>100.7</td><td>13.9</td></tr>
+          <tr><td>findHC</td><td>4096</td><td>3582.9</td><td>45.2</td></tr>
+        </tbody>
+      </table>
     </section>
 
     <section class="suite" id="suite">
@@ -92,7 +80,7 @@
           <a href="https://d-seams.github.io/PydSEAMSlib/">
             <img src="images/logo/pydseams.png" width="72" height="72" alt="">
             <h3>pydseams</h3>
-            <p>Ruhila S. Python <code>Frame</code> API on <code>yoda</code>.</p>
+            <p>Python <code>Frame</code> API on <code>yoda</code>.</p>
           </a>
         </li>
         <li>
@@ -178,8 +166,18 @@ print(dseams.chill_plus(cloud, {cutoff = 3.5}))</code></pre>
     </section>
 
     <section class="walk" id="walk">
-      <h2>Walkthrough</h2>
-      <p class="lede">Nix setup from the first-install recording.</p>
+      <h2>Demos</h2>
+      <div class="then-now">
+        <article>
+          <h3>1.x</h3>
+          <p>The published nix install of the single <code>yodaStruct</code> binary. Keep this recording. Do not retitle it as 2.x.</p>
+        </article>
+        <article>
+          <h3>2.x</h3>
+          <p>Needs its own recording: <code>seams</code>, <code>pip install pydseams</code>, <code>require("dseams")</code>. Until that exists, the snippets above are the demo.</p>
+        </article>
+      </div>
+      <p class="lede">1.x recording</p>
       <div class="cast">
         <script id="asciicast-4KAQce0vldH90WcANWBDACSwD" src="https://asciinema.org/a/4KAQce0vldH90WcANWBDACSwD.js" async></script>
       </div>
@@ -195,7 +193,7 @@ print(dseams.chill_plus(cloud, {cutoff = 3.5}))</code></pre>
         /
         <a href="https://arxiv.org/abs/1909.09830">arXiv:1909.09830</a>
       </p>
-      <p>Software 2.2: Amrita Goswami, Rohit Goswami, Ruhila S. Python binding: Ruhila S.</p>
+      <p>Software 2.2 authors are on each package <code>CITATION.cff</code>.</p>
     </section>
   </main>
 
