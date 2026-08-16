@@ -16,6 +16,7 @@
   <header class="bar">
     <a class="bar-brand" href="/">d-SEAMS</a>
     <nav class="bar-nav">
+      <a href="#v2">2.x</a>
       <a href="https://docs.dseams.info">docs</a>
       <a href="https://wiki.dseams.info">wiki</a>
       <a href="https://github.com/d-SEAMS">github</a>
@@ -28,12 +29,53 @@
       <div class="hero-copy">
         <p class="eyebrow">Deferred Structural Elucidation Analysis for Molecular Simulations</p>
         <h1>Classify ice in MD trajectories.</h1>
-        <p class="lede">A C++ engine for CHILL+ labels and HC / DDC cage membership, with Python and Lua front ends on the same library.</p>
+        <p class="lede">Version 2 is one C++ engine and three packages. The 2020 <code>yodaStruct</code> binary is gone. Python is Ruhila&nbsp;S's <code>pydseams</code>. Lua is <code>require("dseams")</code>.</p>
         <p class="actions">
           <a class="btn btn-primary" href="https://docs.dseams.info">Read the docs</a>
           <a class="btn" href="https://github.com/d-SEAMS/seams-core">seams-core</a>
         </p>
       </div>
+    </section>
+
+    <section class="v2" id="v2">
+      <p class="eyebrow">2.2</p>
+      <h2>One engine. Three packages.</h2>
+      <p class="lede">A binding that lived in the engine tree would force every C++ user to take that language's toolchain, and every wheel to rebuild the same library. Version 2 splits the product. The classifier is <code>libyodaLib</code>. Each language takes it as a Meson subproject and ships on its own schedule. Nobody vendors a second engine.</p>
+      <div class="then-now">
+        <article>
+          <h3>2020</h3>
+          <p>One executable named <code>yodaStruct</code>. YAML plus Lua in a single tree. JCIM paper.</p>
+        </article>
+        <article>
+          <h3>2.x</h3>
+          <p><code>seams</code> on the engine. <code>pydseams</code> and <code>dseams</code> in their own repos. <code>linkcell</code> for periodic k-nearest neighbours.</p>
+        </article>
+      </div>
+      <div class="split" aria-label="Repository split">
+        <div class="split-engine">
+          <span class="split-kicker">engine</span>
+          <a href="https://github.com/d-SEAMS/seams-core">seams-core</a>
+          <span><code>libyodaLib</code> / <code>seams</code></span>
+        </div>
+        <div class="split-arms">
+          <a href="https://d-seams.github.io/PydSEAMSlib/">
+            <span class="split-kicker">Python</span>
+            <strong>pydseams</strong>
+            <span>Ruhila S / PSF GSoC 2023</span>
+          </a>
+          <a href="https://docs.dseams.info">
+            <span class="split-kicker">CLI</span>
+            <strong>seams</strong>
+            <span>read / chill-plus / cages</span>
+          </a>
+          <a href="https://d-seams.github.io/yodaStruct/">
+            <span class="split-kicker">Lua / Fennel</span>
+            <strong>dseams</strong>
+            <span><code>require("dseams")</code></span>
+          </a>
+        </div>
+      </div>
+      <p class="credit"><code>pydseams</code> started as <code>pyseams</code> in PSF GSoC 2023. Ruhila S is the primary author. Helpers (<code>Frame</code>, suffix I/O, ASE, solvis) stay in Python. The compiled surface is <code>pydseams.yoda</code>. Lua helpers stay in yodaStruct. The 2020 binary name survives only as that compiled surface and as <code>require("yoda")</code>, which still resolves to <code>dseams</code>.</p>
     </section>
 
     <section class="suite" id="suite">
@@ -50,7 +92,7 @@
           <a href="https://d-seams.github.io/PydSEAMSlib/">
             <img src="images/logo/pydseams.png" width="72" height="72" alt="">
             <h3>pydseams</h3>
-            <p>Python <code>Frame</code> API on <code>yoda</code>.</p>
+            <p>Ruhila S. Python <code>Frame</code> API on <code>yoda</code>.</p>
           </a>
         </li>
         <li>
@@ -150,9 +192,10 @@ print(dseams.chill_plus(cloud, {cutoff = 3.5}))</code></pre>
         <cite>d-SEAMS: Deferred Structural Elucidation Analysis for Molecular Simulations.</cite>
         <i>J. Chem. Inf. Model.</i> <b>2020</b>.
         <a href="https://doi.org/10.1021/acs.jcim.0c00031">10.1021/acs.jcim.0c00031</a>
-        ·
+        /
         <a href="https://arxiv.org/abs/1909.09830">arXiv:1909.09830</a>
       </p>
+      <p>Software 2.2: Amrita Goswami, Rohit Goswami, Ruhila S. Python binding: Ruhila S.</p>
     </section>
   </main>
 

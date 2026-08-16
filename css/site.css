@@ -139,10 +139,88 @@ h3 { font-size: 1.2rem; }
 
 .btn-primary:hover { background: var(--bond); border-color: var(--bond); color: #fff; }
 
-.suite, .use, .science, .cite {
+.suite, .use, .science, .cite, .v2 {
   max-width: 68rem;
   margin: 0 auto;
   padding: 0 1.5rem 3.2rem;
+}
+
+.then-now {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 1.25rem 0 1.75rem;
+}
+
+.then-now article {
+  padding: 1.1rem 1.2rem;
+  background: var(--card);
+  border: 1px solid var(--line);
+}
+
+.then-now article:first-child { border-top: 4px solid var(--gold); }
+.then-now article:last-child { border-top: 4px solid var(--cage); }
+
+.then-now p { margin: 0; color: var(--muted); }
+
+.split-engine {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 1.2rem 1.3rem;
+  background: var(--ink);
+  color: #e8f4ff;
+}
+
+.split-engine a {
+  color: #fff;
+  font-family: "Source Serif 4", serif;
+  font-size: 1.45rem;
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.split-engine a:hover { color: var(--bond); }
+.split-engine code { color: #9ec5e8; }
+
+.split-kicker {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bond);
+}
+
+.split-arms {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-top: 0;
+}
+
+.split-arms a {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 1rem 1.1rem 1.15rem;
+  background: var(--card);
+  text-decoration: none;
+  color: inherit;
+}
+
+.split-arms a:hover { background: #eef5fb; }
+.split-arms strong {
+  font-family: "Source Serif 4", serif;
+  font-size: 1.2rem;
+}
+.split-arms span:last-child { color: var(--muted); font-size: 0.92rem; }
+
+.credit {
+  margin: 1.1rem 0 0;
+  color: var(--muted);
+  max-width: 48rem;
 }
 
 .cards {
@@ -268,7 +346,7 @@ code, pre {
 .foot p { margin: 1rem 0 0; }
 
 @media (max-width: 860px) {
-  .hero, .cards, .snips, .two, .stills {
+  .hero, .cards, .snips, .two, .stills, .then-now, .split-arms {
     grid-template-columns: 1fr;
   }
   .hero { padding-top: 1.5rem; }
