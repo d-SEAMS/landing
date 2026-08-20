@@ -9,3 +9,12 @@ The page is the suite map: `seams-core`, `pydseams`, `dseams`
 [docs.dseams.info](https://docs.dseams.info) and the binding books.
 Process and worked examples live on
 [wiki.dseams.info](https://wiki.dseams.info).
+
+## Check the site
+
+The standard-library checker validates local links and fragments, HTML
+semantics, keyboard access, and the public package/module names:
+
+```bash
+python scripts/check-site.py .
+```
