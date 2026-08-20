@@ -14,10 +14,11 @@
   <script>window.antics=window.antics||{event:function(){}};document.addEventListener("click",function(e){var a=e.target.closest("a");if(a&&a.hostname!==location.hostname)antics.event("Outbound Link",{url:a.href});});</script>
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
   <div class="lattice" aria-hidden="true"></div>
   <header class="bar">
     <a class="bar-brand" href="/">d-SEAMS</a>
-    <nav class="bar-nav">
+    <nav class="bar-nav" aria-label="Primary">
       <a href="#v2">2.x</a>
       <a href="https://docs.dseams.info">docs</a>
       <a href="https://wiki.dseams.info">wiki</a>
@@ -25,7 +26,7 @@
     </nav>
   </header>
 
-  <main>
+  <main id="main-content" tabindex="-1">
     <section class="hero">
       <img class="hero-cage" src="images/logo/dSeamsLogo.png" width="343" height="358" alt="d-SEAMS hexagonal ice cage">
       <div class="hero-copy">

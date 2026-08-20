@@ -40,6 +40,28 @@ body > * { position: relative; z-index: 1; }
 a { color: var(--cage); }
 a:hover { color: var(--bond); }
 
+a:focus-visible, [tabindex]:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
+}
+
+.skip-link {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 10;
+  padding: 0.55rem 0.8rem;
+  background: var(--ink);
+  color: #fff;
+  font-weight: 700;
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  color: #fff;
+  transform: translateY(0);
+}
+
 .bar {
   display: flex;
   justify-content: space-between;
