@@ -161,7 +161,7 @@ h3 { font-size: 1.2rem; }
 
 .btn-primary:hover { background: var(--bond); border-color: var(--bond); color: #fff; }
 
-.suite, .use, .science, .cite, .v2 {
+.suite, .use, .science, .cite, .v2, .repos {
   max-width: 68rem;
   margin: 0 auto;
   padding: 0 1.5rem 3.2rem;
@@ -275,21 +275,20 @@ h3 { font-size: 1.2rem; }
   margin: 1rem 0 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
 }
 
-.cards a {
+.cards article {
   display: block;
   height: 100%;
   padding: 1.1rem 1rem 1.2rem;
   background: var(--card);
   border: 1px solid var(--line);
-  text-decoration: none;
   color: inherit;
 }
 
-.cards a:hover { border-color: var(--cage); }
+.cards article:hover { border-color: var(--cage); }
 
 .cards img {
   display: block;
@@ -299,6 +298,34 @@ h3 { font-size: 1.2rem; }
 }
 
 .cards p { margin: 0; color: var(--muted); font-size: 0.95rem; }
+
+.cards h3 a { color: inherit; text-decoration: none; }
+.cards h3 a:hover { color: var(--cage); }
+
+.cards .more { margin: 0.65rem 0 0; font-size: 0.88rem; }
+
+.repo-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.6rem 1rem;
+}
+
+.repo-list li {
+  background: var(--card);
+  border: 1px solid var(--line);
+  padding: 0.7rem 0.9rem;
+}
+
+.repo-list a { text-decoration: none; font-weight: 600; }
+
+.repo-list span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
 
 code, pre {
   font-family: "IBM Plex Mono", ui-monospace, monospace;
@@ -398,7 +425,7 @@ code, pre {
 }
 
 @media (max-width: 860px) {
-  .hero, .cards, .snips, .two, .stills, .then-now, .split-arms {
+  .hero, .cards, .snips, .two, .stills, .then-now, .split-arms, .repo-list {
     grid-template-columns: 1fr;
   }
   .hero { padding-top: 1.5rem; }

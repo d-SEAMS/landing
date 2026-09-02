@@ -155,24 +155,74 @@ def check_links(
     return failures
 
 
+def href_values(page: PageParser) -> list[str]:
+    return [url for _tag, attribute, url in page.links if attribute == "href"]
+
+
+def has_href(hrefs: list[str], needed: str) -> bool:
+    target = needed.rstrip("/")
+    for url in hrefs:
+        value = url.rstrip("/")
+        if value == target or value.startswith(f"{target}/"):
+            return True
+    return False
+
+
 def check_contract(site: Path, index: PageParser) -> list[str]:
     text = " ".join(index.text)
     required = (
         "pip install pydseamslib",
         "import pydseams",
         'require("dseams")',
+        "seams-core",
+        "yodaStruct",
+        "dseams-plumed",
+        "DSEAMS_CAGES",
+        "linkcell",
+        "readcon-core",
+        "dseams2_repro",
+        "2.7.0",
+        "0.1.0",
+        "density-z",
+        "fingerprint",
+        "chill-plus",
     )
     forbidden = (
         "pip install pydseams ",
         "Needs its own recording",
         "Until that exists",
         "Software 2.2",
+        "three packages",
+        "Three packages",
+        "libyodaLib",
     )
     failures = [f"index.html: missing public contract: {value}" for value in required if value not in text]
     failures.extend(
         f"index.html: stale or invalid copy: {value}"
         for value in forbidden
         if value in f"{text} "
+    )
+
+    hrefs = href_values(index)
+    required_hrefs = (
+        "https://github.com/d-SEAMS/seams-core",
+        "https://github.com/d-SEAMS/PydSEAMSlib",
+        "https://github.com/d-SEAMS/yodaStruct",
+        "https://github.com/d-SEAMS/linkcell",
+        "https://github.com/d-SEAMS/wiki",
+        "https://github.com/d-SEAMS/landing",
+        "https://github.com/HaoZeke/dseams-plumed",
+        "https://github.com/HaoZeke/dseams2_repro",
+        "https://github.com/HaoZeke/readcon-core",
+        "https://docs.dseams.info",
+        "https://wiki.dseams.info",
+        "https://d-seams.github.io/PydSEAMSlib/",
+        "https://d-seams.github.io/yodaStruct/",
+    )
+    failures.extend(
+        f"index.html: missing required href: {url}"
+        for url in required_hrefs
+        if not has_href(hrefs, url)
     )
 
     css = site / "css" / "site.css"

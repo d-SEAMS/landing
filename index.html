@@ -4,11 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>d-SEAMS</title>
-  <meta name="description" content="Classify ice in molecular-dynamics trajectories. C++ engine, Python Frame API, Lua/Fennel library, periodic k-nearest neighbours.">
+  <meta name="description" content="Classify ice in molecular-dynamics trajectories. seams-core engine, Python Frame API, Lua/Fennel library, PLUMED action, periodic k-nearest neighbours.">
   <link rel="icon" href="favicon.ico" sizes="any">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=Source+Serif+4:opsz,wght@8..60,500;8..60,650&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&amp;family=Source+Serif+4:opsz,wght@8..60,500;8..60,650&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/site.css">
   <script defer src="https://antics-api.turtletech.us/antics.js"></script>
   <script>window.antics=window.antics||{event:function(){}};document.addEventListener("click",function(e){var a=e.target.closest("a");if(a&&a.hostname!==location.hostname)antics.event("Outbound Link",{url:a.href});});</script>
@@ -32,7 +30,7 @@
       <div class="hero-copy">
         <p class="eyebrow">Deferred Structural Elucidation Analysis for Molecular Simulations</p>
         <h1>Classify ice in MD trajectories.</h1>
-        <p class="lede">Version 2 is one C++ engine and three packages. The 2020 <code>yodaStruct</code> binary is gone. 2.x has an expanded team.</p>
+        <p class="lede">Version 2.7.0 is the <code>seams-core</code> engine and the <code>seams</code> CLI. Python, Lua, PLUMED, and linkcell live in their own repositories. 2.x has an expanded team.</p>
         <p class="actions">
           <a class="btn btn-primary" href="https://docs.dseams.info">Read the docs</a>
           <a class="btn" href="https://github.com/d-SEAMS/seams-core">seams-core</a>
@@ -42,8 +40,8 @@
 
     <section class="v2" id="v2">
       <p class="eyebrow">2.x</p>
-      <h2>One engine. Three packages.</h2>
-      <p class="lede">The classifier is <code>libyodaLib</code>. Each language takes it as a Meson subproject. 2.x has an expanded team; names for the Python binding live on the <a href="https://d-seams.github.io/PydSEAMSlib/">pydseams</a> book.</p>
+      <h2>One engine. Named packages.</h2>
+      <p class="lede">Users install the public names below. Install and API detail live on <a href="https://docs.dseams.info">docs.dseams.info</a> and the binding books.</p>
       <div class="then-now">
         <article>
           <h3>1.x / 2020</h3>
@@ -51,7 +49,7 @@
         </article>
         <article>
           <h3>2.x</h3>
-          <p><code>seams</code> CLI. <code>pydseams</code> and <code>dseams</code> in their own repos. <code>linkcell</code> for periodic kNN.</p>
+          <p><code>seams</code> CLI from seams-core v2.7.0. <code>pydseamslib</code> on PyPI. yodaStruct for Lua and Fennel. dseams-plumed for <code>DSEAMS_CAGES</code>. linkcell for periodic kNN.</p>
         </article>
       </div>
       <table class="bench">
@@ -73,39 +71,99 @@
       <h2>The suite</h2>
       <ul class="cards">
         <li>
-          <a href="https://docs.dseams.info">
+          <article>
             <img src="images/logo/dSeamsLogo.png" width="72" height="75" alt="">
-            <h3>seams-core</h3>
-            <p><code>libyodaLib</code> and the <code>seams</code> CLI.</p>
-          </a>
+            <h3><a href="https://github.com/d-SEAMS/seams-core">seams-core</a></h3>
+            <p>v2.7.0. The <code>seams</code> CLI on the C++ engine.</p>
+            <p class="more"><a href="https://docs.dseams.info">docs</a></p>
+          </article>
         </li>
         <li>
-          <a href="https://d-seams.github.io/PydSEAMSlib/">
+          <article>
             <img src="images/logo/pydseams.png" width="72" height="72" alt="">
-            <h3>pydseams</h3>
-            <p>Install <code>pydseamslib</code>; import <code>pydseams</code> for the Python <code>Frame</code> API.</p>
-          </a>
+            <h3><a href="https://github.com/d-SEAMS/PydSEAMSlib">pydseamslib</a></h3>
+            <p>v2.7.0. <code>pip install pydseamslib</code>; <code>import pydseams</code>. Frame API, features for deeptime and PyEMMA, ions, and topology keys.</p>
+            <p class="more"><a href="https://d-seams.github.io/PydSEAMSlib/">book</a></p>
+          </article>
         </li>
         <li>
-          <a href="https://d-seams.github.io/yodaStruct/">
+          <article>
             <img src="images/logo/dseams.png" width="72" height="72" alt="">
-            <h3>dseams</h3>
-            <p>Lua and Fennel. <code>require("dseams")</code>.</p>
-          </a>
+            <h3><a href="https://github.com/d-SEAMS/yodaStruct">yodaStruct</a></h3>
+            <p>v2.7.0. Lua and Fennel. <code>require("dseams")</code>.</p>
+            <p class="more"><a href="https://d-seams.github.io/yodaStruct/">book</a></p>
+          </article>
         </li>
         <li>
-          <a href="https://github.com/d-SEAMS/linkcell">
+          <article>
+            <img src="images/logo/dSeamsLogo.png" width="72" height="75" alt="">
+            <h3><a href="https://github.com/HaoZeke/dseams-plumed">dseams-plumed</a></h3>
+            <p>v0.1.0. The <code>DSEAMS_CAGES</code> PLUMED action.</p>
+          </article>
+        </li>
+        <li>
+          <article>
             <img src="images/logo/linkcell.svg" width="72" height="72" alt="">
-            <h3>linkcell</h3>
+            <h3><a href="https://github.com/d-SEAMS/linkcell">linkcell</a></h3>
             <p>Periodic linked-cell k-nearest neighbours for Rust, C, C++, and Python.</p>
-          </a>
+          </article>
+        </li>
+        <li>
+          <article>
+            <img src="images/logo/dseams.png" width="72" height="72" alt="">
+            <h3><a href="https://github.com/HaoZeke/readcon-core">readcon-core</a></h3>
+            <p>CON input. Repository: HaoZeke/readcon-core.</p>
+          </article>
+        </li>
+      </ul>
+    </section>
+
+    <section class="repos" id="repos">
+      <h2>Repositories</h2>
+      <p class="lede">Six repositories live under <a href="https://github.com/d-SEAMS">github.com/d-SEAMS</a>: seams-core, PydSEAMSlib, yodaStruct, linkcell, wiki, and landing. Companion trees are HaoZeke/dseams-plumed and HaoZeke/dseams2_repro. CON input is HaoZeke/readcon-core.</p>
+      <ul class="repo-list">
+        <li>
+          <a href="https://github.com/d-SEAMS/seams-core">d-SEAMS/seams-core</a>
+          <span>engine and <code>seams</code> CLI</span>
+        </li>
+        <li>
+          <a href="https://github.com/d-SEAMS/PydSEAMSlib">d-SEAMS/PydSEAMSlib</a>
+          <span>Python binding</span>
+        </li>
+        <li>
+          <a href="https://github.com/d-SEAMS/yodaStruct">d-SEAMS/yodaStruct</a>
+          <span>Lua and Fennel</span>
+        </li>
+        <li>
+          <a href="https://github.com/d-SEAMS/linkcell">d-SEAMS/linkcell</a>
+          <span>periodic kNN crate</span>
+        </li>
+        <li>
+          <a href="https://github.com/d-SEAMS/wiki">d-SEAMS/wiki</a>
+          <span>process and examples</span>
+        </li>
+        <li>
+          <a href="https://github.com/d-SEAMS/landing">d-SEAMS/landing</a>
+          <span>this site</span>
+        </li>
+        <li>
+          <a href="https://github.com/HaoZeke/dseams-plumed">HaoZeke/dseams-plumed</a>
+          <span><code>DSEAMS_CAGES</code></span>
+        </li>
+        <li>
+          <a href="https://github.com/HaoZeke/dseams2_repro">HaoZeke/dseams2_repro</a>
+          <span>reproducibility package</span>
+        </li>
+        <li>
+          <a href="https://github.com/HaoZeke/readcon-core">HaoZeke/readcon-core</a>
+          <span>CON input</span>
         </li>
       </ul>
     </section>
 
     <section class="use" id="use">
       <h2>Call it</h2>
-      <p class="lede">Install the Python wheel with <code>pip install pydseamslib</code>; the import remains <code>pydseams</code>.</p>
+      <p class="lede">Install the Python wheel with <code>pip install pydseamslib</code>; the import remains <code>pydseams</code>. The <code>seams</code> CLI commands are read, chill, chill-plus, cages, fingerprint, ions, rdf, cn, hbonds, pairs, density-z, and domains.</p>
       <div class="snips">
         <figure>
           <figcaption>CLI</figcaption>
@@ -174,7 +232,7 @@ print(dseams.chill_plus(cloud, {cutoff = 3.5}))</code></pre>
       <div class="then-now">
         <article>
           <h3>1.x</h3>
-          <p>The published nix install of the single <code>yodaStruct</code> binary. Keep this recording. Do not retitle it as 2.x.</p>
+          <p>The published nix install of the single <code>yodaStruct</code> binary.</p>
         </article>
         <article>
           <h3>2.x</h3>
@@ -197,7 +255,7 @@ print(dseams.chill_plus(cloud, {cutoff = 3.5}))</code></pre>
         /
         <a href="https://arxiv.org/abs/1909.09830">arXiv:1909.09830</a>
       </p>
-      <p>Software 2.x authors are listed in each package's <code>CITATION.cff</code>.</p>
+      <p>Software 2.x authors are listed in each package's <code>CITATION.cff</code>. The reproducibility package is <a href="https://github.com/HaoZeke/dseams2_repro">dseams2_repro</a>.</p>
     </section>
   </main>
 
