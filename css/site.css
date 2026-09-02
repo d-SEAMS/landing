@@ -404,6 +404,12 @@ code, pre {
   border: 1px solid var(--line);
   padding: 0.5rem;
   overflow: auto;
+  margin-bottom: 1rem;
+}
+
+.cast .ap-wrapper,
+.cast .ap-player {
+  width: 100%;
 }
 
 .cite p { max-width: 46rem; color: var(--muted); }

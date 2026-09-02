@@ -186,11 +186,14 @@ def check_contract(site: Path, index: PageParser) -> list[str]:
         "density-z",
         "chill-plus",
         "read, chill, chill-plus, cages, rdf, cn, hbonds, pairs, density-z, and domains",
+        "1.x recording",
+        "2.x recording",
     )
     forbidden = (
         "pip install pydseams ",
         "Needs its own recording",
         "Until that exists",
+        "Use the runnable",
         "Software 2.2",
         "three packages",
         "Three packages",
@@ -221,12 +224,45 @@ def check_contract(site: Path, index: PageParser) -> list[str]:
         "https://wiki.dseams.info",
         "https://d-seams.github.io/PydSEAMSlib/",
         "https://d-seams.github.io/yodaStruct/",
+        "https://cdn.jsdelivr.net/npm/asciinema-player@3.17.0/dist/bundle/asciinema-player.css",
+        "casts/dseams-2x.cast",
     )
     failures.extend(
         f"index.html: missing required href: {url}"
         for url in required_hrefs
         if not has_href(hrefs, url)
     )
+
+    srcs = [url for _tag, attribute, url in index.links if attribute == "src"]
+    required_srcs = (
+        "https://cdn.jsdelivr.net/npm/asciinema-player@3.17.0/dist/bundle/asciinema-player.min.js",
+        "https://asciinema.org/a/4KAQce0vldH90WcANWBDACSwD.js",
+    )
+    failures.extend(
+        f"index.html: missing required src: {url}"
+        for url in required_srcs
+        if url not in srcs
+    )
+
+    cast = site / "casts" / "dseams-2x.cast"
+    if not cast.is_file():
+        failures.append("casts/dseams-2x.cast: missing 2.x recording")
+    else:
+        cast_text = cast.read_text(encoding="utf-8")
+        for value in (
+            "seams",
+            "pip install pydseamslib",
+            "import pydseams",
+        ):
+            if value not in cast_text:
+                failures.append(f"casts/dseams-2x.cast: missing public contract: {value}")
+        if (
+            'require("dseams")' not in cast_text
+            and r'require(\"dseams\")' not in cast_text
+        ):
+            failures.append(
+                'casts/dseams-2x.cast: missing public contract: require("dseams")'
+            )
 
     css = site / "css" / "site.css"
     if not css.is_file():

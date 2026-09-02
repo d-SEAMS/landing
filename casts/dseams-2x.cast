@@ -1,0 +1,9 @@
+{"version": 2, "width": 100, "height": 24, "timestamp": 1788373622, "idle_time_limit": 0.6, "env": {"SHELL": "/bin/bash", "TERM": "xterm-256color"}, "title": "d-SEAMS 2.x"}
+[0.004138, "o", "$ seams --version\r\n"]
+[0.013563, "o", "\u001b[1;35mseams\u001b[0m 2.7.0\r\n"]
+[0.013727, "o", "$ seams --frame 1 cages mW_cubic.lammpstrj\r\n"]
+[0.133897, "o", "\u001b[1;34mnop\u001b[0m 4096 \u001b[1;36mgraph\u001b[0m seeded \u001b[1;32mhexagonal\u001b[0m 0 \u001b[1;36mcubic\u001b[0m 4096 water 0\r\n"]
+[0.135286, "o", "$ # pip install pydseamslib\r\n"]
+[0.135336, "o", "$ python -c \"import pydseams as ds; frame = ds.read('mW_cubic.lammpstrj'); print(type(frame).__name__, frame.n_atoms)\"\r\n"]
+[0.168878, "o", "Frame 4096\r\n"]
+[0.172187, "o", "$ lua -e 'require(\"dseams\")'\r\n"]

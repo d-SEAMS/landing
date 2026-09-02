@@ -13,11 +13,18 @@ Six repositories live under [github.com/d-SEAMS](https://github.com/d-SEAMS):
 [docs.dseams.info](https://docs.dseams.info) and the binding books.
 Process and worked examples live on
 [wiki.dseams.info](https://wiki.dseams.info).
+The 1.x demo stays the published
+[yodaStruct nix recording](https://asciinema.org/a/4KAQce0vldH90WcANWBDACSwD).
+The 2.x demo lives in-repo at `casts/dseams-2x.cast` and runs
+`seams cages`, `pip install pydseamslib` with `import pydseams`,
+and `require("dseams")`.
 
 ## Check the site
 
 The standard-library checker validates local links and fragments, HTML
-semantics, keyboard access, and the public package/module names:
+semantics, keyboard access, the public package and module names, and the
+2.x asciicast at `casts/dseams-2x.cast`. The 1.x walkthrough stays on
+asciinema.org.
 
 ```bash
 python scripts/check-site.py .
