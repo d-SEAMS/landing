@@ -184,8 +184,8 @@ def check_contract(site: Path, index: PageParser) -> list[str]:
         "2.7.0",
         "0.1.0",
         "density-z",
-        "fingerprint",
         "chill-plus",
+        "read, chill, chill-plus, cages, rdf, cn, hbonds, pairs, density-z, and domains",
     )
     forbidden = (
         "pip install pydseams ",
@@ -195,6 +195,9 @@ def check_contract(site: Path, index: PageParser) -> list[str]:
         "three packages",
         "Three packages",
         "libyodaLib",
+        "fingerprint",
+        "topology keys",
+        "seams ions",
     )
     failures = [f"index.html: missing public contract: {value}" for value in required if value not in text]
     failures.extend(
