@@ -181,11 +181,13 @@ def check_contract(site: Path, index: PageParser) -> list[str]:
         "linkcell",
         "readcon-core",
         "dseams2_repro",
-        "2.7.0",
-        "0.1.0",
+        "2.9.0",
+        "0.3.0",
         "density-z",
         "chill-plus",
-        "read, chill, chill-plus, cages, rdf, cn, hbonds, pairs, density-z, and domains",
+        "fingerprint",
+        "topology keys",
+        "read, chill, chill-plus, cages, fingerprint, ions, rdf, cn, hbonds, pairs, density-z, and domains",
         "1.x recording",
         "2.x recording",
     )
@@ -198,9 +200,8 @@ def check_contract(site: Path, index: PageParser) -> list[str]:
         "three packages",
         "Three packages",
         "libyodaLib",
-        "fingerprint",
-        "topology keys",
-        "seams ions",
+        "2.7.0",
+        "0.1.0",
     )
     failures = [f"index.html: missing public contract: {value}" for value in required if value not in text]
     failures.extend(
