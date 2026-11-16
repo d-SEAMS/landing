@@ -32,7 +32,7 @@
       <div class="hero-copy">
         <p class="eyebrow">Deferred Structural Elucidation Analysis for Molecular Simulations</p>
         <h1>Classify ice in MD trajectories.</h1>
-        <p class="lede">Version 2.9.0 is the <code>seams-core</code> engine and the <code>seams</code> CLI. Python, Lua, PLUMED, and linkcell live in their own repositories. 2.x has an expanded team.</p>
+        <p class="lede">Version 2.14.0 is the <code>seams-core</code> engine and the <code>seams</code> CLI. Python, Lua, R, Julia, Rust, Fortran, PLUMED, and linkcell live in their own repositories. 2.x has an expanded team.</p>
         <p class="actions">
           <a class="btn btn-primary" href="https://docs.dseams.info">Read the docs</a>
           <a class="btn" href="https://github.com/d-SEAMS/seams-core">seams-core</a>
@@ -51,11 +51,11 @@
         </article>
         <article>
           <h3>2.x</h3>
-          <p><code>seams</code> CLI from seams-core v2.9.0. <code>pydseamslib</code> on PyPI, with an MDAnalysis analysis, an OVITO modifier and a Colab notebook. yodaStruct for Lua and Fennel. dseams-plumed for <code>DSEAMS_CAGES</code>. linkcell for periodic kNN.</p>
+          <p><code>seams</code> CLI from seams-core v2.14.0. <code>pydseamslib</code> on PyPI, with an MDAnalysis analysis, an OVITO modifier and a Colab notebook. yodaStruct for Lua and Fennel. dseams-r, Dseams.jl, dseams-rs and dseams-fortran over the C ABI. dseams-plumed for <code>DSEAMS_CAGES</code>. linkcell for periodic kNN.</p>
         </article>
       </div>
       <table class="bench">
-        <caption>Elja exclusive Xeon Platinum 8358, job 1785712. Base <code>1c8efa3</code> vs tip <code>13c95ce</code>. Times in ms, best-of. Manifest: <code>repro/reference/paper_manifest-elja-1785712.json</code>.</caption>
+        <caption>Elja exclusive Xeon Platinum 8358, job 1785712. Base <code>1c8efa3</code> vs tip <code>13c95ce</code>. Times in ms, best-of. Manifest: <code>dseams2_repro/results/reference/paper_manifest-elja-1785712.json</code>.</caption>
         <thead>
           <tr><th>Stage</th><th>N</th><th>1.x scan</th><th>2.x</th></tr>
         </thead>
@@ -76,7 +76,7 @@
           <article>
             <img src="images/logo/dSeamsLogo.png" width="72" height="75" alt="">
             <h3><a href="https://github.com/d-SEAMS/seams-core">seams-core</a></h3>
-            <p>v2.9.0. The <code>seams</code> CLI on the C++ engine: cages, CHILL+, topology keys, ions, guests, and per-atom dumps for OVITO or VMD.</p>
+            <p>v2.14.0. The <code>seams</code> CLI on the C++ engine: cages, CHILL+, topology keys, ions, guests, and per-atom dumps for OVITO or VMD. Each language binding releases under the seams-core version it builds against.</p>
             <p class="more"><a href="https://docs.dseams.info">docs</a></p>
           </article>
         </li>
@@ -84,7 +84,7 @@
           <article>
             <img src="images/logo/pydseams.png" width="72" height="72" alt="">
             <h3><a href="https://github.com/d-SEAMS/PydSEAMSlib">pydseamslib</a></h3>
-            <p>v2.9.0. <code>pip install pydseamslib</code>; <code>import pydseams</code>. Frame API, features for deeptime and PyEMMA, ion and guest helpers, <code>pydseams.adapters</code> for MDAnalysis and OVITO.</p>
+            <p><code>pip install pydseamslib</code>; <code>import pydseams</code>. Frame API, features for deeptime and PyEMMA, ion and guest helpers, <code>pydseams.adapters</code> for MDAnalysis and OVITO.</p>
             <p class="more"><a href="https://d-seams.github.io/PydSEAMSlib/">book</a></p>
           </article>
         </li>
@@ -92,15 +92,22 @@
           <article>
             <img src="images/logo/dseams.png" width="72" height="72" alt="">
             <h3><a href="https://github.com/d-SEAMS/yodaStruct">yodaStruct</a></h3>
-            <p>v2.9.0. Lua and Fennel. <code>require("dseams")</code>.</p>
+            <p>Lua and Fennel. <code>require("dseams")</code>.</p>
             <p class="more"><a href="https://d-seams.github.io/yodaStruct/">book</a></p>
+          </article>
+        </li>
+        <li>
+          <article>
+            <img src="images/logo/dseams.png" width="72" height="72" alt="">
+            <h3>R, Julia, Rust, Fortran</h3>
+            <p><a href="https://github.com/d-SEAMS/dseams-r">dseams-r</a>, <a href="https://github.com/d-SEAMS/Dseams.jl">Dseams.jl</a>, <a href="https://github.com/d-SEAMS/dseams-rs">dseams-rs</a> and <a href="https://github.com/d-SEAMS/dseams-fortran">dseams-fortran</a> call the engine through its C ABI.</p>
           </article>
         </li>
         <li>
           <article>
             <img src="images/logo/dSeamsLogo.png" width="72" height="75" alt="">
             <h3><a href="https://github.com/d-SEAMS/dseams-plumed">dseams-plumed</a></h3>
-            <p>v0.3.0. The <code>DSEAMS_CAGES</code> PLUMED action: cage counts, ion classes, key libraries and filled cages on the fly.</p>
+            <p>v0.3.1. The <code>DSEAMS_CAGES</code> PLUMED action: cage counts, ion classes, key libraries and filled cages on the fly.</p>
           </article>
         </li>
         <li>
@@ -122,7 +129,7 @@
 
     <section class="repos" id="repos">
       <h2>Repositories</h2>
-      <p class="lede">Eight repositories live under <a href="https://github.com/d-SEAMS">github.com/d-SEAMS</a>: seams-core, PydSEAMSlib, yodaStruct, linkcell, dseams-plumed, dseams2_repro, wiki and landing. The CON reader the engine embeds, readcon-core, lives with its LODE siblings under <a href="https://github.com/lode-org">lode-org</a>.</p>
+      <p class="lede">Twelve repositories live under <a href="https://github.com/d-SEAMS">github.com/d-SEAMS</a>: seams-core, PydSEAMSlib, yodaStruct, dseams-r, Dseams.jl, dseams-rs, dseams-fortran, linkcell, dseams-plumed, dseams2_repro, wiki and landing. The CON reader the engine embeds, readcon-core, lives with its LODE siblings under <a href="https://github.com/lode-org">lode-org</a>.</p>
       <ul class="repo-list">
         <li>
           <a href="https://github.com/d-SEAMS/seams-core">d-SEAMS/seams-core</a>
@@ -135,6 +142,22 @@
         <li>
           <a href="https://github.com/d-SEAMS/yodaStruct">d-SEAMS/yodaStruct</a>
           <span>Lua and Fennel</span>
+        </li>
+        <li>
+          <a href="https://github.com/d-SEAMS/dseams-r">d-SEAMS/dseams-r</a>
+          <span>R binding</span>
+        </li>
+        <li>
+          <a href="https://github.com/d-SEAMS/Dseams.jl">d-SEAMS/Dseams.jl</a>
+          <span>Julia binding</span>
+        </li>
+        <li>
+          <a href="https://github.com/d-SEAMS/dseams-rs">d-SEAMS/dseams-rs</a>
+          <span>Rust binding</span>
+        </li>
+        <li>
+          <a href="https://github.com/d-SEAMS/dseams-fortran">d-SEAMS/dseams-fortran</a>
+          <span>Fortran binding</span>
         </li>
         <li>
           <a href="https://github.com/d-SEAMS/linkcell">d-SEAMS/linkcell</a>
@@ -165,7 +188,7 @@
 
     <section class="use" id="use">
       <h2>Call it</h2>
-      <p class="lede">Install the Python wheel with <code>pip install pydseamslib</code>; the import remains <code>pydseams</code>. The <code>seams</code> CLI commands are read, chill, chill-plus, cages, fingerprint, ions, rdf, cn, hbonds, pairs, density-z, and domains.</p>
+      <p class="lede">Install the Python wheel with <code>pip install pydseamslib</code>; the import remains <code>pydseams</code>. The <code>seams</code> CLI commands are read, chill, chill-plus, ovito-chill+, cages, symmetry, rings, prisms, cluster, fingerprint, ions, f4, steinhardt, rdf, cn, hbonds, pairs, density-z, and domains.</p>
       <div class="snips">
         <figure>
           <figcaption>CLI</figcaption>
