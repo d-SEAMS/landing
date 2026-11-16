@@ -31,4 +31,6 @@ asciinema.org.
 
 ```bash
 python scripts/check-site.py .
+lychee --config lychee.toml --root-dir "$PWD" index.html README.md
+python scripts/check-dois.py index.html README.md
 ```

@@ -1,0 +1,16 @@
+# External link check of the landing page.
+# Local links and fragments are covered by scripts/check-site.py.
+
+offline = false
+accept = ["200", "202", "206", "429"]
+max_retries = 3
+timeout = 20
+user_agent = "dseams-landing-lychee"
+
+exclude = [
+    # ACS (and the doi.org hop to it) returns 403 to automated clients.
+    # scripts/check-dois.py resolves each DOI through the doi.org handle
+    # API instead.
+    '^https://doi\.org/10\.1021/',
+    '^https://pubs\.acs\.org/',
+]
