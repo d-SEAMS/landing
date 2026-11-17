@@ -24,10 +24,12 @@ as a comment before `import pydseams`, and loads `require("dseams")`.
 
 ## Check the site
 
-The standard-library checker validates local links and fragments, HTML
-semantics, keyboard access, the public package and module names, and the
-2.x asciicast at `casts/dseams-2x.cast`. The 1.x walkthrough stays on
-asciinema.org.
+The checker validates local links and fragments, HTML semantics, keyboard
+access, the public package and module names, and the 2.x asciicast at
+`casts/dseams-2x.cast`. Current versions come from each repository's
+latest release tag, and the pydseamslib wheel version from PyPI, so the
+checker needs network access for those lookups. The 1.x walkthrough stays
+on asciinema.org.
 
 ```bash
 python scripts/check-site.py .

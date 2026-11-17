@@ -1,0 +1,114 @@
+Measurement change to seams-core v2.14.0 tests/bench_scaling.cpp for the
+neighbour list, ring index and CHILL+ rows. The released driver prints the
+minimum of an internal loop; with this patch it makes seven calls per stage
+and prints each one. Apply from a v2.14.0 checkout with git apply.
+
+diff --git a/tests/bench_scaling.cpp b/tests/bench_scaling.cpp
+index cb47e05..f22507a 100644
+--- a/tests/bench_scaling.cpp
++++ b/tests/bench_scaling.cpp
+@@ -74,20 +74,29 @@ Cloud makeCloud(int nAtoms, int typeI) {
+   return cloud;
+ }
+
+-/// Runs @a fn @a reps times and returns the best wall time in milliseconds.
+-/// The minimum is reported rather than the mean because a loaded machine adds
+-/// only positive noise.
+-template <typename Fn> double bestMillis(Fn &&fn, int reps) {
+-  double best = std::numeric_limits<double>::max();
++/// Wall time of each call, in milliseconds. The distributed driver reduces
++/// these to a minimum; this measurement build keeps every call.
++template <typename Fn>
++std::vector<double> sampleMillis(Fn &&fn, int reps) {
++  std::vector<double> samples;
++  samples.reserve(static_cast<std::size_t>(reps));
+   for (int rep = 0; rep < reps; rep++) {
+     const auto start = std::chrono::steady_clock::now();
+     fn();
+     const auto end = std::chrono::steady_clock::now();
+-    const double ms =
+-        std::chrono::duration<double, std::milli>(end - start).count();
+-    best = std::min(best, ms);
++    samples.push_back(
++        std::chrono::duration<double, std::milli>(end - start).count());
++  }
++  return samples;
++}
++
++void printSamples(int nAtoms, const char *stage,
++                  const std::vector<double> &samples) {
++  std::cout << std::fixed << std::setprecision(6);
++  for (std::size_t rep = 0; rep < samples.size(); rep++) {
++    std::cout << nAtoms << " " << stage << " " << rep << " " << samples[rep]
++              << "\n";
+   }
+-  return best;
+ }
+
+ } // namespace
+@@ -104,39 +113,39 @@ int main(int argc, char **argv) {
+   constexpr int typeI = 1;
+   constexpr double cutoff = 3.5;
+
+-  std::cout << std::left << std::setw(10) << "nAtoms" << std::setw(16)
+-            << "neighListO/ms" << std::setw(16) << "byIndex/ms"
+-            << std::setw(16) << "getCorrelPlus/ms" << std::setw(16)
+-            << "ringNetwork/ms" << "\n";
+-  std::cout << std::string(74, '-') << "\n";
++  // One discarded warm-up call, then the recorded repeats. The ring
++  // network at the sizes above 8000 is not a landing-page row; the
++  // reproducibility manifest leaves it blank there.
++  const int reps = 7;
+
+   for (int nAtoms : sizes) {
+     Cloud cloud = makeCloud(nAtoms, typeI);
+-    const int reps = nAtoms <= 4000 ? 5 : 3;
+
+     std::vector<std::vector<int>> nList;
+-    const double tNeigh = bestMillis(
+-        [&]() { nList = nneigh::neighListO(cutoff, cloud, typeI); }, reps);
++    printSamples(nAtoms, "neighListO", sampleMillis([&]() {
++                   nList = nneigh::neighListO(cutoff, cloud, typeI);
++                 },
++                 reps));
+
+     std::vector<std::vector<int>> byIndex;
+-    const double tIndex = bestMillis(
+-        [&]() { byIndex = nneigh::getNewNeighbourListByIndex(cloud, cutoff); },
+-        reps);
+-
+-    const double tCorrel = bestMillis(
+-        [&]() { chill::getCorrelPlus(cloud, nList, false); }, reps);
+-
+-    const double tRings = bestMillis(
+-        [&]() {
+-          volatile auto rings = primitive::ringNetwork(byIndex, 6);
+-          (void)rings;
+-        },
+-        nAtoms <= 8000 ? reps : 1);
+-
+-    std::cout << std::left << std::setw(10) << nAtoms << std::setw(16)
+-              << std::fixed << std::setprecision(3) << tNeigh << std::setw(16)
+-              << tIndex << std::setw(16) << tCorrel << std::setw(16) << tRings
+-              << "\n";
++    printSamples(nAtoms, "byIndex", sampleMillis([&]() {
++                   byIndex =
++                       nneigh::getNewNeighbourListByIndex(cloud, cutoff);
++                 },
++                 reps));
++
++    printSamples(nAtoms, "getCorrelPlus", sampleMillis([&]() {
++                   chill::getCorrelPlus(cloud, nList, false);
++                 },
++                 reps));
++
++    if (nAtoms <= 8000) {
++      printSamples(nAtoms, "ringNetwork", sampleMillis([&]() {
++                     volatile auto rings = primitive::ringNetwork(byIndex, 6);
++                     (void)rings;
++                   },
++                   reps));
++    }
+   }
+
+   return 0;

@@ -1,9 +1,17 @@
-"""Validate the static landing page without network access."""
+"""Validate the static landing page.
+
+Structure, local links and wording are checked offline. Current package
+versions are read from each repository's latest release tag, and the
+pydseamslib wheel version from PyPI, so those lookups need network access.
+"""
 
 from __future__ import annotations
 
 import argparse
+import json
 import re
+import subprocess
+import urllib.request
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
@@ -181,25 +189,119 @@ INTERNAL_TEXT = (
 )
 
 
+# The one long hex run the page may show: the full 40-character id of a
+# release commit, written straight after the word "commit".
+RELEASE_COMMIT = re.compile(r"\bcommit\s+(?:<code>)?\Z", re.IGNORECASE)
+
+
+def is_release_commit(line: str, match: re.Match[str]) -> bool:
+    return len(match.group(0)) == 40 and RELEASE_COMMIT.search(line[: match.start()]) is not None
+
+
 def check_internal_text(site: Path) -> list[str]:
     """Keep working notes out of the files that make up the public page."""
     failures: list[str] = []
-    for name in ("index.html", "README.md"):
+    names = ["index.html", "README.md"]
+    names.extend(path.relative_to(site).as_posix() for path in sorted(site.glob("bench/*.txt")))
+    for name in names:
         path = site / name
         if not path.is_file():
             continue
         for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
             for pattern, label in INTERNAL_TEXT:
-                match = re.search(pattern, line, flags=re.IGNORECASE)
-                if match:
+                for match in re.finditer(pattern, line, flags=re.IGNORECASE):
+                    if label.startswith("commit hash") and is_release_commit(line, match):
+                        continue
                     failures.append(
                         f"{name}:{number}: internal text ({label}): {match.group(0)}"
                     )
+                    break
     return failures
+
+
+_TAG = re.compile(r"v?(\d+)\.(\d+)\.(\d+)\Z")
+
+
+def _version_key(tag: str) -> tuple[int, int, int] | None:
+    match = _TAG.fullmatch(tag)
+    if match is None:
+        return None
+    return tuple(int(part) for part in match.groups())
+
+
+def latest_release_tag(repo: str) -> str:
+    """Highest vX.Y.Z tag on the public d-SEAMS repository."""
+    url = f"https://github.com/d-SEAMS/{repo}.git"
+    try:
+        proc = subprocess.run(
+            ["git", "ls-remote", "--tags", "--refs", url],
+            check=True,
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )
+    except (OSError, subprocess.TimeoutExpired, subprocess.CalledProcessError):
+        raise RuntimeError(f"{repo}: release tag lookup failed") from None
+    best_name = ""
+    best_key: tuple[int, int, int] | None = None
+    for line in proc.stdout.splitlines():
+        ref = line.split()[-1]
+        name = ref.rsplit("/", 1)[-1]
+        key = _version_key(name)
+        if key is not None and (best_key is None or key > best_key):
+            best_key = key
+            best_name = name
+    if best_key is None:
+        raise RuntimeError(f"{repo}: no release tag")
+    return best_name
+
+
+def pypi_version(project: str) -> str:
+    """Version of the current PyPI release."""
+    url = f"https://pypi.org/pypi/{project}/json"
+    request = urllib.request.Request(url, headers={"User-Agent": "dseams-landing-check"})
+    try:
+        with urllib.request.urlopen(request, timeout=60) as response:
+            payload = json.load(response)
+        version = str(payload["info"]["version"])
+    except (OSError, KeyError, ValueError, json.JSONDecodeError):
+        raise RuntimeError(f"{project}: PyPI lookup failed") from None
+    if _version_key(version) is None:
+        raise RuntimeError(f"{project}: PyPI version is not X.Y.Z")
+    return version
+
+
+def bare_version(tag: str) -> str:
+    return tag[1:] if tag.startswith("v") else tag
+
+
+def current_versions() -> dict[str, str]:
+    """Versions the page has to state, from one lookup per package."""
+    return {
+        "seams-core": latest_release_tag("seams-core"),
+        "yodaStruct": latest_release_tag("yodaStruct"),
+        "dseams-plumed": latest_release_tag("dseams-plumed"),
+        "dseams-rs": latest_release_tag("dseams-rs"),
+        "pydseamslib": pypi_version("pydseamslib"),
+    }
 
 
 def check_contract(site: Path, index: PageParser) -> list[str]:
     text = " ".join(index.text)
+    version_failures: list[str] = []
+    try:
+        versions = current_versions()
+    except RuntimeError as exc:
+        versions = None
+        version_failures.append(f"index.html: could not read current versions: {exc}")
+    if versions is None:
+        core = plumed = yoda = crate = pypi = ""
+    else:
+        core = bare_version(versions["seams-core"])
+        plumed = versions["dseams-plumed"]
+        yoda = versions["yodaStruct"]
+        crate = bare_version(versions["dseams-rs"])
+        pypi = versions["pydseamslib"]
     required = (
         "pip install pydseamslib",
         "import pydseams",
@@ -215,9 +317,6 @@ def check_contract(site: Path, index: PageParser) -> list[str]:
         "Dseams.jl",
         "dseams-rs",
         "dseams-fortran",
-        "2.14.0",
-        "v0.4.0",
-        "2.11.1",
         "not on LuaRocks yet",
         "not on CRAN yet",
         "not in the Julia General registry yet",
@@ -249,7 +348,25 @@ def check_contract(site: Path, index: PageParser) -> list[str]:
         "Eight repositories",
         "repro/reference/",
     )
-    failures = [f"index.html: missing public contract: {value}" for value in required if value not in text]
+    failures = list(version_failures)
+    failures.extend(
+        f"index.html: missing public contract: {value}" for value in required if value not in text
+    )
+    if versions is not None:
+        derived = (
+            core,
+            versions["seams-core"],
+            plumed,
+            pypi,
+            f"Latest on PyPI is {pypi}",
+            f"Latest tag is {yoda}",
+            f"crate at {crate}",
+        )
+        failures.extend(
+            f"index.html: missing public contract: {value}"
+            for value in derived
+            if value not in text
+        )
     failures.extend(
         f"index.html: stale or invalid copy: {value}"
         for value in forbidden

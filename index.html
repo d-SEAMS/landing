@@ -55,16 +55,16 @@
         </article>
       </div>
       <table class="bench">
-        <caption>Intel Xeon Platinum 8358. Times in ms, best of repeated runs. The 1.x scan column ran on seams-core 2.0.1 and the 2.x column on the 2.1.0 tree. Results and scripts: <a href="https://github.com/d-SEAMS/dseams2_repro">dseams2_repro</a>.</caption>
+        <caption>seams-core 2.14.0, commit <code>acc8bbc803f55bac39493c85300f87a8ce302829</code>. Release build on an Intel Xeon (family 6, model 207, stepping 2), Linux 6.12.113+, g++ 13.3.0, <code>-O3 -DNDEBUG</code>, one process pinned to one core, <code>OMP_NUM_THREADS=1</code>. Times are the median and the interquartile range of six repeats after a warm-up, in ms, rounded half up to 0.001. Neighbour list, ring index and CHILL+ are the synthetic 32000-atom cloud in <code>bench_scaling</code>, patched to print every call instead of the minimum (<a href="bench/v2.14.0-bench_scaling.patch">bench/v2.14.0-bench_scaling.patch</a>). Six-rings and findHC are frame 1 of the 4096-atom mW cubic trajectory in <code>bench_cages</code>. Repeats: <a href="bench/v2.14.0-repeats.csv">bench/v2.14.0-repeats.csv</a>. Machine, flags and sources: <a href="bench/v2.14.0-machine.txt">bench/v2.14.0-machine.txt</a>.</caption>
         <thead>
-          <tr><th>Stage</th><th>N</th><th>1.x scan</th><th>2.x</th></tr>
+          <tr><th>Stage</th><th>N</th><th>median (ms)</th><th>IQR (ms)</th></tr>
         </thead>
         <tbody>
-          <tr><td>neighbour list</td><td>32000</td><td>862.2</td><td>43.5</td></tr>
-          <tr><td>ring index</td><td>32000</td><td>5955.5</td><td>42.4</td></tr>
-          <tr><td>CHILL+</td><td>32000</td><td>111.5</td><td>44.8</td></tr>
-          <tr><td>six-rings</td><td>4096</td><td>100.7</td><td>13.9</td></tr>
-          <tr><td>findHC</td><td>4096</td><td>3582.9</td><td>45.2</td></tr>
+          <tr><td>neighbour list</td><td>32000</td><td>11.668</td><td>0.473</td></tr>
+          <tr><td>ring index</td><td>32000</td><td>5.715</td><td>0.788</td></tr>
+          <tr><td>CHILL+</td><td>32000</td><td>7.089</td><td>0.104</td></tr>
+          <tr><td>six-rings</td><td>4096</td><td>4.334</td><td>0.183</td></tr>
+          <tr><td>findHC</td><td>4096</td><td>3.632</td><td>0.025</td></tr>
         </tbody>
       </table>
     </section>

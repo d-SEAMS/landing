@@ -1,0 +1,102 @@
+seams-core 2.14.0
+commit acc8bbc803f55bac39493c85300f87a8ce302829
+tag v2.14.0
+
+cpu: Intel(R) Xeon(R) Processor
+vendor: GenuineIntel
+family: 6
+model: 207
+stepping: 2
+kernel: Linux 6.12.113+ x86_64
+
+compiler: g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+meson: 1.3.2
+ninja: 1.11.1
+buildtype: release
+configure: -Dwith_tests=true -Dwith_chemfiles=disabled -Dwith_lammps=disabled -Dwith_gromacs=disabled -Dwith_openmm=disabled -Dwith_plumed=disabled -Dwith_gpulite=disabled
+The packaged library job uses those disables and buildtype=release. Tests stayed on so bench_scaling and bench_cages exist.
+
+Release flags on the library (src/neighbours.cpp), without include paths:
+-std=c++20 -O3 -DNDEBUG -fPIC -pthread -fopenmp -funroll-loops
+-Wall -Wextra -Winvalid-pch
+-Wno-sign-compare -Wno-unused-variable -Wno-unused-parameter
+-Wno-unused-but-set-variable -Wno-maybe-uninitialized -Wno-unused-result
+-D_FILE_OFFSET_BITS=64
+-DLINKCELL_HAS_GPULITE=1
+-DSEAMS_HAS_OPENMP=1
+-DSEAMS_HAS_VESIN=1
+-DSEAMS_HAS_LINKCELL=1
+-DSEAMS_HAS_MINIMAGE=1
+-DSEAMS_YLM_AVX512=1
+-DSEAMS_SHELL_AVX2=1
+Eigen 3.4.0
+
+Meson backends:
+OpenMP: yes
+vesin: yes
+linkcell: 0.4.2
+minimage: 0.1.4
+chemfiles: no
+gpulite (seams option): no
+readcon-core: no (rustc 1.83.0; the v2.14.0 wrap requires rustc >= 1.88.0)
+ira: no
+sphericart: no
+nauty: no
+blas: none
+
+Protocol:
+one process at a time
+taskset -c 0
+OMP_NUM_THREADS=1
+OMP_PROC_BIND=close
+OMP_PLACES=cores
+OMP_DYNAMIC=FALSE
+one warm-up, then six repeats
+median: mean of the two central values
+IQR: type-7 quartiles (Python statistics.quantiles, method inclusive)
+table cells: that median and IQR, rounded half up to 0.001 ms
+
+Unrounded median and IQR, from the repeats with warmup=0:
+neighListO n=32000 median 11.6675355 IQR 0.47303975 min 11.499346 max 13.190331
+byIndex n=32000 median 5.7154675 IQR 0.7877805 min 5.530337 max 6.733836
+getCorrelPlus n=32000 median 7.089383 IQR 0.104397 min 7.004422 max 7.168102
+ringNetwork n=4096 median 4.334 IQR 0.1825 min 4.231 max 4.594
+findHC n=4096 median 3.6315 IQR 0.02525 min 3.602 max 3.753
+
+Where the rows come from:
+The five rows are the scaling entry at 32000 atoms and the cage block in
+the reference run manifest of dseams2_repro, where the workflow/Snakefile
+rules tip_scaling and tip_cages produce them. The v2.14.0 sources are
+tests/bench_scaling.cpp and tests/bench_cages.cpp.
+
+At N=32000 the neighbour list row times nneigh::neighListO, the ring
+index row nneigh::getNewNeighbourListByIndex, and the CHILL+ row
+chill::getCorrelPlus on the neighListO result. All three use the synthetic cubic cloud in bench_scaling.cpp: number
+density 0.0332 atoms per cubic Å, cutoff 3.5 Å, atom type 1 and a
+deterministic jitter. The manifest keys are neighListO_ms, byIndex_ms
+and getCorrelPlus_ms.
+
+At N=4096 the six-rings row times primitive::ringNetwork and the findHC
+row times ring::findHC on the six-membered rings. Both use tests/bench_cages.cpp on input/traj/mW_cubic.lammpstrj, frame 1,
+atom type 1, cutoff 3.5 Å. Every process reported 4096 atoms,
+8192 rings and 8192 six-rings. N is the atom count. The manifest keys
+are cages ringNetwork/ms and findHC/ms.
+
+This run did not time the ring network of the 32000-atom cloud, and no
+row shows it. The manifest leaves ringNetwork_ms empty at 16000 and 32000.
+
+Driver change:
+In the release, bench_scaling has no repeat argument and prints the
+minimum of an internal loop. This run timed bench_scaling built with
+v2.14.0-bench_scaling.patch applied. It calls each of the three functions
+seven times and prints every call. Repeat 0 is the warm-up.
+bench_cages is the released binary, run seven times with its repeat
+argument set to 1. The first process is the warm-up. Its printer rounds
+those two stages to 0.001 ms, and the csv keeps that printed value.
+
+Commands, from the input directory of the v2.14.0 build tree, with the
+environment above:
+taskset -c 0 ../build-rel/tests/bench_scaling 32000
+taskset -c 0 ../build-rel/tests/bench_cages traj/mW_cubic.lammpstrj 1 1
+
+No row is a threaded sweep. OpenMP is linked and limited to one thread.
