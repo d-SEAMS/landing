@@ -17,7 +17,7 @@ Twelve repositories live under [github.com/d-SEAMS](https://github.com/d-SEAMS):
 Process and worked examples live on
 [wiki.dseams.info](https://wiki.dseams.info).
 The 1.x demo stays the published
-[yodaStruct nix recording](https://asciinema.org/a/4KAQce0vldH90WcANWBDACSwD).
+[yodaStruct nix recording](https://asciinema.org/a/240387).
 The 2.x demo lives in-repo at `casts/dseams-2x.cast` and runs
 `seams cages`, `pip install pydseamslib` with `import pydseams`,
 and `require("dseams")`.
