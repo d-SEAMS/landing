@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import re
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
@@ -168,6 +169,35 @@ def has_href(hrefs: list[str], needed: str) -> bool:
     return False
 
 
+INTERNAL_TEXT = (
+    (r"\bjobs?\s*#?\d{3,}", "job id"),
+    (r"\bbase\b[^.\n]{0,60}\bvs\b[^.\n]{0,60}\btip\b", "revision comparison"),
+    (r"(?<![\w./-])(?=[0-9a-f]*\d)[0-9a-f]{7,40}(?![\w-])", "commit hash or long job number"),
+    (r"\bexclusive\b", "scheduler wording"),
+    (r"\b(?:todo|fixme|xxx|wip|draft)\b", "draft marker"),
+    (r"\b(?:claude|chatgpt|copilot|openai|anthropic)\b", "assistant name"),
+    (r"results/reference", "internal results path"),
+    (r"(?<![\w/.:-])/(?:home|users|tmp|agent|workspace|opt|var|mnt)/", "absolute path"),
+)
+
+
+def check_internal_text(site: Path) -> list[str]:
+    """Keep working notes out of the files that make up the public page."""
+    failures: list[str] = []
+    for name in ("index.html", "README.md"):
+        path = site / name
+        if not path.is_file():
+            continue
+        for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+            for pattern, label in INTERNAL_TEXT:
+                match = re.search(pattern, line, flags=re.IGNORECASE)
+                if match:
+                    failures.append(
+                        f"{name}:{number}: internal text ({label}): {match.group(0)}"
+                    )
+    return failures
+
+
 def check_contract(site: Path, index: PageParser) -> list[str]:
     text = " ".join(index.text)
     required = (
@@ -192,7 +222,6 @@ def check_contract(site: Path, index: PageParser) -> list[str]:
         "fingerprint",
         "topology keys",
         "read, chill, chill-plus, ovito-chill+, cages, symmetry, rings, prisms, cluster, fingerprint, ions, f4, steinhardt, rdf, cn, hbonds, pairs, density-z, and domains",
-        "dseams2_repro/results/reference/paper_manifest-elja-1785712.json",
         "1.x recording",
         "2.x recording",
     )
@@ -302,6 +331,7 @@ def check_site(site: Path) -> list[str]:
         failures.extend(check_page(site, source, page))
     failures.extend(check_links(site, parsed_pages))
     failures.extend(check_contract(site, parsed_pages[index_path]))
+    failures.extend(check_internal_text(site))
     return failures
 
 
