@@ -6,6 +6,7 @@
   <title>d-SEAMS - Ice, Clathrate &amp; Ring Topology for MD</title>
   <meta name="description" content="Classify cubic, hexagonal, interfacial, and clathrate ice phases, isolate HC/DDC cages, and compute primitive rings in molecular dynamics trajectories.">
   <link rel="canonical" href="https://dseams.info/">
+  <meta property="og:site_name" content="d-SEAMS">
   <meta property="og:title" content="d-SEAMS - Ice, Clathrate &amp; Ring Topology for MD">
   <meta property="og:description" content="One C++ engine with native bindings in Python, Rust, Julia, R, Lua, Fortran, and PLUMED. Classify local ice phases, hydrate cages, and primitive rings.">
   <meta property="og:type" content="website">
@@ -13,10 +14,12 @@
   <meta property="og:image" content="https://dseams.info/images/og-card.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="d-SEAMS molecular structure analysis render">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="d-SEAMS - Ice, Clathrate &amp; Ring Topology for MD">
   <meta name="twitter:description" content="Classify local ice phases, hexagonal and double-diamond cages, and primitive rings in MD trajectories.">
   <meta name="twitter:image" content="https://dseams.info/images/og-card.png">
+  <meta name="twitter:image:alt" content="d-SEAMS molecular structure analysis render">
   <link rel="icon" href="favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -31,17 +34,42 @@
     "@graph": [
       {
         "@type": "SoftwareApplication",
+        "@id": "https://dseams.info/#software",
         "name": "d-SEAMS",
+        "alternateName": "Deferred Structural Elucidation Analysis for Molecular Simulations",
         "url": "https://dseams.info/",
         "applicationCategory": "ScientificApplication",
         "operatingSystem": "Linux, macOS, Windows",
         "license": "https://opensource.org/licenses/MIT",
         "codeRepository": "https://github.com/d-SEAMS/seams-core",
         "programmingLanguage": ["C++", "Python", "Rust", "Julia", "R", "Lua", "Fortran"],
-        "description": "Deferred Structural Elucidation Analysis for Molecular Simulations: local ice classification, primitive rings, and hexagonal/double-diamond/clathrate cage identification."
+        "description": "Deferred Structural Elucidation Analysis for Molecular Simulations: local ice classification, primitive rings, and hexagonal/double-diamond/clathrate cage identification.",
+        "softwareVersion": "2.14.0",
+        "image": "https://dseams.info/images/og-card.png",
+        "sameAs": [
+          "https://github.com/d-SEAMS",
+          "https://pypi.org/project/pydseamslib/",
+          "https://crates.io/crates/dseams",
+          "https://crates.io/crates/dseams-sys",
+          "https://crates.io/crates/linkcell"
+        ],
+        "citation": {"@id": "https://doi.org/10.1021/acs.jcim.0c00031"}
+      },
+      {
+        "@type": "SoftwareSourceCode",
+        "@id": "https://github.com/d-SEAMS/seams-core",
+        "name": "d-SEAMS source code",
+        "url": "https://dseams.info/",
+        "codeRepository": "https://github.com/d-SEAMS/seams-core",
+        "programmingLanguage": ["C++", "Python", "Rust", "Julia", "R", "Lua", "Fortran"],
+        "runtimePlatform": "Linux, macOS, Windows",
+        "license": "https://opensource.org/licenses/MIT",
+        "targetProduct": {"@id": "https://dseams.info/#software"},
+        "citation": {"@id": "https://doi.org/10.1021/acs.jcim.0c00031"}
       },
       {
         "@type": "ScholarlyArticle",
+        "@id": "https://doi.org/10.1021/acs.jcim.0c00031",
         "name": "d-SEAMS: Deferred Structural Elucidation Analysis for Molecular Simulations",
         "author": [
           {"@type": "Person", "name": "Rohit Goswami"},
@@ -59,6 +87,8 @@
         },
         "datePublished": "2020-04-27",
         "pagination": "2169-2177",
+        "doi": "10.1021/acs.jcim.0c00031",
+        "url": "https://doi.org/10.1021/acs.jcim.0c00031",
         "sameAs": "https://doi.org/10.1021/acs.jcim.0c00031"
       }
     ]

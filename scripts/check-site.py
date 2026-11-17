@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import xml.etree.ElementTree as ET
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
@@ -18,6 +19,8 @@ class PageParser(HTMLParser):
         self.ids: set[str] = set()
         self.duplicate_ids: set[str] = set()
         self.links: list[tuple[str, str, str]] = []
+        self.meta: list[dict[str, str]] = []
+        self.link_tags: list[dict[str, str]] = []
         self.text: list[str] = []
         self.title: list[str] = []
         self._in_title = False
@@ -45,6 +48,10 @@ class PageParser(HTMLParser):
             self.nav_labels.append(values.get("aria-label"))
         elif tag == "img" and "alt" not in values:
             self.images_without_alt += 1
+        if tag == "meta":
+            self.meta.append({key: value or "" for key, value in attrs})
+        elif tag == "link":
+            self.link_tags.append({key: value or "" for key, value in attrs})
 
         element_id = values.get("id")
         if element_id:
@@ -327,6 +334,101 @@ def check_contract(site: Path, index: PageParser) -> list[str]:
     return failures
 
 
+def check_seo(site: Path, index: PageParser) -> list[str]:
+    failures: list[str] = []
+    descriptions = [
+        item.get("content", "")
+        for item in index.meta
+        if item.get("name", "").lower() == "description"
+    ]
+    if len(descriptions) != 1 or not descriptions[0]:
+        failures.append("index.html: expected one non-empty meta description")
+
+    canonicals = [
+        item.get("href", "")
+        for item in index.link_tags
+        if "canonical" in item.get("rel", "").lower().split()
+    ]
+    if canonicals != ["https://dseams.info/"]:
+        failures.append("index.html: canonical must be https://dseams.info/")
+
+    required_properties = {
+        "og:site_name": "d-SEAMS",
+        "og:title": "",
+        "og:description": "",
+        "og:type": "website",
+        "og:url": "https://dseams.info/",
+        "og:image": "https://dseams.info/images/og-card.png",
+        "og:image:alt": "",
+    }
+    for prop, expected in required_properties.items():
+        values = [
+            item.get("content", "")
+            for item in index.meta
+            if item.get("property", "").lower() == prop
+        ]
+        if len(values) != 1 or not values[0] or (expected and values[0] != expected):
+            failures.append(f"index.html: invalid {prop}")
+
+    required_names = {
+        "twitter:card": "summary_large_image",
+        "twitter:title": "",
+        "twitter:description": "",
+        "twitter:image": "https://dseams.info/images/og-card.png",
+        "twitter:image:alt": "",
+    }
+    for name, expected in required_names.items():
+        values = [
+            item.get("content", "")
+            for item in index.meta
+            if item.get("name", "").lower() == name
+        ]
+        if len(values) != 1 or not values[0] or (expected and values[0] != expected):
+            failures.append(f"index.html: invalid {name}")
+
+    image = site / "images" / "og-card.png"
+    if not image.is_file():
+        failures.append("images/og-card.png: missing social image")
+
+    robots = site / "robots.txt"
+    if not robots.is_file():
+        failures.append("robots.txt: missing")
+    else:
+        text = robots.read_text(encoding="utf-8")
+        if "User-agent: *" not in text or "Allow: /" not in text:
+            failures.append("robots.txt: crawlers must be allowed")
+        if "Sitemap: https://dseams.info/sitemap.xml" not in text:
+            failures.append("robots.txt: missing sitemap URL")
+
+    sitemap = site / "sitemap.xml"
+    if not sitemap.is_file():
+        failures.append("sitemap.xml: missing")
+    else:
+        namespace = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
+        locations = [
+            item.text or ""
+            for item in ET.parse(sitemap).findall(".//sm:loc", namespace)
+        ]
+        if locations != ["https://dseams.info/"]:
+            failures.append("sitemap.xml: expected only https://dseams.info/")
+
+    source = (site / "index.html").read_text(encoding="utf-8")
+    blocks = re.findall(
+        r'<script\s+type="application/ld\+json"\s*>(.*?)</script>',
+        source,
+        flags=re.IGNORECASE | re.DOTALL,
+    )
+    if len(blocks) != 1:
+        failures.append("index.html: expected one JSON-LD graph")
+    else:
+        graph = json.loads(blocks[0]).get("@graph", [])
+        types = {node.get("@type") for node in graph if isinstance(node, dict)}
+        required_types = {"SoftwareApplication", "SoftwareSourceCode", "ScholarlyArticle"}
+        if not required_types.issubset(types):
+            failures.append("index.html: incomplete JSON-LD graph")
+    return failures
+
+
 def check_site(site: Path) -> list[str]:
     site = site.resolve()
     pages = sorted(path.resolve() for path in site.rglob("*.html"))
@@ -355,6 +457,7 @@ def check_site(site: Path) -> list[str]:
         if need not in hero_src:
             failures.append(f"index.html: missing figure or logo src: {need}")
     failures.extend(check_contract(site, parsed_pages[index_path]))
+    failures.extend(check_seo(site, parsed_pages[index_path]))
     failures.extend(check_internal_text(site))
     return failures
 
