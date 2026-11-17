@@ -3,8 +3,9 @@
 
 offline = false
 accept = ["200", "202", "206", "429"]
-max_retries = 3
-timeout = 20
+max_retries = 5
+retry_wait_time = 10
+timeout = 30
 user_agent = "dseams-landing-lychee"
 
 exclude = [
