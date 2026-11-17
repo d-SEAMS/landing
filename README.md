@@ -18,9 +18,9 @@ Process and worked examples live on
 [wiki.dseams.info](https://wiki.dseams.info).
 The 1.x demo stays the published
 [yodaStruct nix recording](https://asciinema.org/a/240387).
-The 2.x demo lives in-repo at `casts/dseams-2x.cast` and runs
-`seams cages`, `pip install pydseamslib` with `import pydseams`,
-and `require("dseams")`.
+The 2.x demo lives in-repo at `casts/dseams-2x.cast`. It was recorded
+with seams 2.7.0 and runs `seams cages`, notes `pip install pydseamslib`
+as a comment before `import pydseams`, and loads `require("dseams")`.
 
 ## Check the site
 

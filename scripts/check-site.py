@@ -229,6 +229,7 @@ def check_contract(site: Path, index: PageParser) -> list[str]:
         "read, chill, chill-plus, ovito-chill+, cages, symmetry, rings, prisms, cluster, fingerprint, ions, f4, steinhardt, rdf, cn, hbonds, pairs, density-z, and domains",
         "1.x recording",
         "2.x recording",
+        "recording was made with seams 2.7.0",
     )
     forbidden = (
         "pip install pydseams ",
@@ -239,7 +240,6 @@ def check_contract(site: Path, index: PageParser) -> list[str]:
         "three packages",
         "Three packages",
         "libyodaLib",
-        "2.7.0",
         "2.9.0",
         "0.1.0",
         "0.3.0",
@@ -302,6 +302,7 @@ def check_contract(site: Path, index: PageParser) -> list[str]:
         cast_text = cast.read_text(encoding="utf-8")
         for value in (
             "seams",
+            "2.7.0",
             "pip install pydseamslib",
             "import pydseams",
         ):
