@@ -51,7 +51,7 @@
         </article>
         <article>
           <h3>2.x</h3>
-          <p><code>seams</code> CLI from seams-core v2.14.0. <code>pydseamslib</code> on PyPI, with an MDAnalysis analysis, an OVITO modifier and a Colab notebook. yodaStruct for Lua and Fennel. dseams-r, Dseams.jl, dseams-rs and dseams-fortran over the C ABI. dseams-plumed for <code>DSEAMS_CAGES</code>. linkcell for periodic kNN.</p>
+          <p><code>seams</code> CLI from seams-core v2.14.0. <code>pydseamslib</code> 2.11.1 on PyPI, with an MDAnalysis analysis, an OVITO modifier and a Colab notebook. yodaStruct for Lua and Fennel. dseams-r, Dseams.jl, dseams-rs and dseams-fortran over the C ABI. dseams-plumed for <code>DSEAMS_CAGES</code>. linkcell for periodic kNN.</p>
         </article>
       </div>
       <table class="bench">
@@ -76,7 +76,7 @@
           <article>
             <img src="images/logo/dSeamsLogo.png" width="72" height="75" alt="">
             <h3><a href="https://github.com/d-SEAMS/seams-core">seams-core</a></h3>
-            <p>v2.14.0. The <code>seams</code> CLI on the C++ engine: cages, CHILL+, topology keys, ions, guests, and per-atom dumps for OVITO or VMD. Each language binding releases under the seams-core version it builds against.</p>
+            <p>v2.14.0. The <code>seams</code> CLI on the C++ engine: cages, CHILL+, topology keys, ions, guests, and per-atom dumps for OVITO or VMD. Language bindings are released separately from the engine.</p>
             <p class="more"><a href="https://docs.dseams.info">docs</a></p>
           </article>
         </li>
@@ -84,7 +84,7 @@
           <article>
             <img src="images/logo/pydseams.png" width="72" height="72" alt="">
             <h3><a href="https://github.com/d-SEAMS/PydSEAMSlib">pydseamslib</a></h3>
-            <p><code>pip install pydseamslib</code>; <code>import pydseams</code>. Frame API, features for deeptime and PyEMMA, ion and guest helpers, <code>pydseams.adapters</code> for MDAnalysis and OVITO.</p>
+            <p><code>pip install pydseamslib</code>; <code>import pydseams</code>. Latest on PyPI is 2.11.1, for Python 3.11 or newer. Frame API, features for deeptime and PyEMMA, ion and guest helpers, <code>pydseams.adapters</code> for MDAnalysis and OVITO.</p>
             <p class="more"><a href="https://d-seams.github.io/PydSEAMSlib/">book</a></p>
           </article>
         </li>
@@ -92,7 +92,7 @@
           <article>
             <img src="images/logo/dseams.png" width="72" height="72" alt="">
             <h3><a href="https://github.com/d-SEAMS/yodaStruct">yodaStruct</a></h3>
-            <p>Lua and Fennel. <code>require("dseams")</code>.</p>
+            <p>Lua and Fennel. <code>require("dseams")</code>. Latest tag is v2.10.0. Build it from source; it is not on LuaRocks yet.</p>
             <p class="more"><a href="https://d-seams.github.io/yodaStruct/">book</a></p>
           </article>
         </li>
@@ -100,14 +100,14 @@
           <article>
             <img src="images/logo/dseams.png" width="72" height="72" alt="">
             <h3>R, Julia, Rust, Fortran</h3>
-            <p><a href="https://github.com/d-SEAMS/dseams-r">dseams-r</a>, <a href="https://github.com/d-SEAMS/Dseams.jl">Dseams.jl</a>, <a href="https://github.com/d-SEAMS/dseams-rs">dseams-rs</a> and <a href="https://github.com/d-SEAMS/dseams-fortran">dseams-fortran</a> call the engine through its C ABI.</p>
+            <p><a href="https://github.com/d-SEAMS/dseams-r">dseams-r</a>, <a href="https://github.com/d-SEAMS/Dseams.jl">Dseams.jl</a>, <a href="https://github.com/d-SEAMS/dseams-rs">dseams-rs</a> and <a href="https://github.com/d-SEAMS/dseams-fortran">dseams-fortran</a> call the engine through its C ABI. <code>dseams-rs</code> is on crates.io as the <code>dseams</code> crate at 2.14.0. <code>dseams-r</code> installs from GitHub and is not on CRAN yet. <code>Dseams.jl</code> is not in the Julia General registry yet.</p>
           </article>
         </li>
         <li>
           <article>
             <img src="images/logo/dSeamsLogo.png" width="72" height="75" alt="">
             <h3><a href="https://github.com/d-SEAMS/dseams-plumed">dseams-plumed</a></h3>
-            <p>v0.3.1. The <code>DSEAMS_CAGES</code> PLUMED action: cage counts, ion classes, key libraries and filled cages on the fly.</p>
+            <p>v0.4.0. The <code>DSEAMS_CAGES</code> PLUMED action: cage counts, ion classes, key libraries and filled cages on the fly.</p>
           </article>
         </li>
         <li>
@@ -121,7 +121,7 @@
           <article>
             <img src="images/logo/dseams.png" width="72" height="72" alt="">
             <h3><a href="https://github.com/lode-org/readcon-core">readcon-core</a></h3>
-            <p>CON input. Repository: lode-org/readcon-core.</p>
+            <p>CON and convel reader and writer for atomistic checkpoints, maintained under lode-org.</p>
           </article>
         </li>
       </ul>
@@ -129,7 +129,7 @@
 
     <section class="repos" id="repos">
       <h2>Repositories</h2>
-      <p class="lede">Twelve repositories live under <a href="https://github.com/d-SEAMS">github.com/d-SEAMS</a>: seams-core, PydSEAMSlib, yodaStruct, dseams-r, Dseams.jl, dseams-rs, dseams-fortran, linkcell, dseams-plumed, dseams2_repro, wiki and landing. The CON reader the engine embeds, readcon-core, lives with its LODE siblings under <a href="https://github.com/lode-org">lode-org</a>.</p>
+      <p class="lede">The project repositories under <a href="https://github.com/d-SEAMS">github.com/d-SEAMS</a> are seams-core, PydSEAMSlib, yodaStruct, dseams-r, Dseams.jl, dseams-rs, dseams-fortran, linkcell, dseams-plumed, dseams2_repro, wiki and landing. The CON reader the engine embeds, readcon-core, lives with its LODE siblings under <a href="https://github.com/lode-org">lode-org</a>.</p>
       <ul class="repo-list">
         <li>
           <a href="https://github.com/d-SEAMS/seams-core">d-SEAMS/seams-core</a>
@@ -188,7 +188,7 @@
 
     <section class="use" id="use">
       <h2>Call it</h2>
-      <p class="lede">Install the Python wheel with <code>pip install pydseamslib</code>; the import remains <code>pydseams</code>. The <code>seams</code> CLI commands are read, chill, chill-plus, ovito-chill+, cages, symmetry, rings, prisms, cluster, fingerprint, ions, f4, steinhardt, rdf, cn, hbonds, pairs, density-z, and domains.</p>
+      <p class="lede">Install the Python wheel with <code>pip install pydseamslib</code>; the import remains <code>pydseams</code>. The latest wheel on PyPI is 2.11.1, built for Linux and Apple-silicon macOS on Python 3.11 or newer. Build the <code>seams</code> CLI and the C libraries from source with meson, pixi or Nix. <code>libseams</code> is not on conda-forge yet. The <code>seams</code> CLI commands are read, chill, chill-plus, ovito-chill+, cages, symmetry, rings, prisms, cluster, fingerprint, ions, f4, steinhardt, rdf, cn, hbonds, pairs, density-z, and domains.</p>
       <div class="snips">
         <figure>
           <figcaption>CLI</figcaption>

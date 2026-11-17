@@ -8,7 +8,7 @@ The page is the suite map for seams-core 2.14.0: `seams-core`
 (`seams`), `pydseamslib` (`import pydseams`), `yodaStruct`
 (`require("dseams")`), the R, Julia, Rust and Fortran bindings,
 `dseams-plumed` (`DSEAMS_CAGES`), `linkcell`, and `readcon-core`.
-Twelve repositories live under [github.com/d-SEAMS](https://github.com/d-SEAMS):
+The project repositories under [github.com/d-SEAMS](https://github.com/d-SEAMS) are
 `seams-core`, `PydSEAMSlib`, `yodaStruct`, `dseams-r`, `Dseams.jl`,
 `dseams-rs`, `dseams-fortran`, `linkcell`, `dseams-plumed`,
 `dseams2_repro`, `wiki`, and `landing`; `readcon-core` lives at
