@@ -23,6 +23,8 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - run: python scripts/check-site.py .
+      - run: python scripts/check-cross-nav.py
+      - run: python scripts/check-registries.py
 
   links:
     name: External links

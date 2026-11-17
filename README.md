@@ -1,36 +1,25 @@
 # dseams.info
 
-Static landing page for [d-SEAMS](https://dseams.info), deployed from
-this repository. No HTML5UP / Dimension theme. Analytics is
-[Antics](https://antics.turtletech.us/) from TurtleTech ehf.
+Static landing page for [d-SEAMS](https://dseams.info/), deployed from
+this repository. No external CDNs, no third-party fonts, and no tracking
+scripts.
 
-The page is the suite map for seams-core 2.14.0: `seams-core`
-(`seams`), `pydseamslib` (`import pydseams`), `yodaStruct`
-(`require("dseams")`), the R, Julia, Rust and Fortran bindings,
-`dseams-plumed` (`DSEAMS_CAGES`), `linkcell`, and `readcon-core`.
-Twelve repositories live under [github.com/d-SEAMS](https://github.com/d-SEAMS):
-`seams-core`, `PydSEAMSlib`, `yodaStruct`, `dseams-r`, `Dseams.jl`,
-`dseams-rs`, `dseams-fortran`, `linkcell`, `dseams-plumed`,
-`dseams2_repro`, `wiki`, and `landing`; `readcon-core` lives at
-[lode-org](https://github.com/lode-org/readcon-core). Install and API detail live on
-[docs.dseams.info](https://docs.dseams.info) and the binding books.
-Process and worked examples live on
-[wiki.dseams.info](https://wiki.dseams.info).
-The 1.x demo stays the published
-[yodaStruct nix recording](https://asciinema.org/a/4KAQce0vldH90WcANWBDACSwD).
-The 2.x demo lives in-repo at `casts/dseams-2x.cast` and runs
-`seams cages`, `pip install pydseamslib` with `import pydseams`,
-and `require("dseams")`.
+The page introduces the `seams-core` ice, clathrate, and ring topology
+engine with an interactive raw-versus-CHILL+ interface comparison,
+install tabs and documentation links across Python (`pydseamslib`),
+CLI / C++ (`seams-core`), Rust (`dseams`), Julia (`Dseams.jl`), R
+(`dseams-r`), Lua (`yodaStruct`), Fortran (`dseams-fortran`), PLUMED
+(`dseams-plumed`), and `linkcell`, real CLI outputs paired with Cycles
+renders, and citation metadata for
+[doi:10.1021/acs.jcim.0c00031](https://doi.org/10.1021/acs.jcim.0c00031).
 
 ## Check the site
 
-The standard-library checker validates local links and fragments, HTML
-semantics, keyboard access, the public package and module names, and the
-2.x asciicast at `casts/dseams-2x.cast`. The 1.x walkthrough stays on
-asciinema.org.
-
 ```bash
-python scripts/check-site.py .
+python3 scripts/check-site.py .
+python3 scripts/check-cross-nav.py
+python3 scripts/check-registries.py
+python3 scripts/check-images.py .
 lychee --config lychee.toml --root-dir "$PWD" index.html README.md
-python scripts/check-dois.py index.html README.md
+python3 scripts/check-dois.py index.html README.md
 ```

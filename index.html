@@ -3,307 +3,544 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>d-SEAMS</title>
-  <meta name="description" content="Classify ice in molecular-dynamics trajectories. seams-core engine, Python Frame API, Lua/Fennel library, PLUMED action, periodic k-nearest neighbours.">
+  <title>d-SEAMS - Ice, Clathrate &amp; Ring Topology for MD</title>
+  <meta name="description" content="Classify cubic, hexagonal, interfacial, and clathrate ice phases, isolate HC/DDC cages, and compute primitive rings in molecular dynamics trajectories.">
+  <link rel="canonical" href="https://dseams.info/">
+  <meta property="og:title" content="d-SEAMS - Ice, Clathrate &amp; Ring Topology for MD">
+  <meta property="og:description" content="One C++ engine with native bindings in Python, Rust, Julia, R, Lua, Fortran, and PLUMED. Classify local ice phases, hydrate cages, and primitive rings.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://dseams.info/">
+  <meta property="og:image" content="https://dseams.info/images/og-card.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="d-SEAMS - Ice, Clathrate &amp; Ring Topology for MD">
+  <meta name="twitter:description" content="Classify local ice phases, hexagonal and double-diamond cages, and primitive rings in MD trajectories.">
+  <meta name="twitter:image" content="https://dseams.info/images/og-card.png">
   <link rel="icon" href="favicon.ico" sizes="any">
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&amp;family=Source+Serif+4:opsz,wght@8..60,500;8..60,650&amp;display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="preload" as="image" imagesrcset="images/science/gallery-interface-raw-640.webp 640w, images/science/gallery-interface-raw-760.webp 760w, images/science/gallery-interface-raw.webp 1200w" imagesizes="(max-width: 960px) 92vw, 580px" fetchpriority="high">
+  <script>document.documentElement.classList.add("js");</script>
   <link rel="stylesheet" href="css/site.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/asciinema-player@3.17.0/dist/bundle/asciinema-player.css">
-  <link rel="preload" href="casts/dseams-2x.cast" as="fetch" crossorigin>
-  <script defer src="https://antics-api.turtletech.us/antics.js"></script>
-  <script>window.antics=window.antics||{event:function(){}};document.addEventListener("click",function(e){var a=e.target.closest("a");if(a&&a.hostname!==location.hostname)antics.event("Outbound Link",{url:a.href});});</script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "SoftwareApplication",
+        "name": "d-SEAMS",
+        "url": "https://dseams.info/",
+        "applicationCategory": "ScientificApplication",
+        "operatingSystem": "Linux, macOS, Windows",
+        "license": "https://opensource.org/licenses/MIT",
+        "codeRepository": "https://github.com/d-SEAMS/seams-core",
+        "programmingLanguage": ["C++", "Python", "Rust", "Julia", "R", "Lua", "Fortran"],
+        "description": "Deferred Structural Elucidation Analysis for Molecular Simulations: local ice classification, primitive rings, and hexagonal/double-diamond/clathrate cage identification."
+      },
+      {
+        "@type": "ScholarlyArticle",
+        "name": "d-SEAMS: Deferred Structural Elucidation Analysis for Molecular Simulations",
+        "author": [
+          {"@type": "Person", "name": "Rohit Goswami"},
+          {"@type": "Person", "name": "Amrita Goswami"},
+          {"@type": "Person", "name": "Jayant Kumar Singh"}
+        ],
+        "isPartOf": {
+          "@type": "PublicationVolume",
+          "volumeNumber": "60",
+          "issueNumber": "4",
+          "isPartOf": {
+            "@type": "Periodical",
+            "name": "Journal of Chemical Information and Modeling"
+          }
+        },
+        "datePublished": "2020-04-27",
+        "pagination": "2169-2177",
+        "sameAs": "https://doi.org/10.1021/acs.jcim.0c00031"
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to content</a>
-  <div class="lattice" aria-hidden="true"></div>
-  <header class="bar">
-    <a class="bar-brand" href="/">d-SEAMS</a>
-    <nav class="bar-nav" aria-label="Primary">
-      <a href="#v2">2.x</a>
-      <a href="https://docs.dseams.info">docs</a>
-      <a href="https://wiki.dseams.info">wiki</a>
-      <a href="https://github.com/d-SEAMS">github</a>
-    </nav>
+
+  <header class="topbar">
+    <div class="shell topbar-inner">
+      <a class="brand" href="/">
+        <img class="brand-mark" src="images/logo/dSeamsLogo.png" width="28" height="29" alt="">
+        <span class="brand-word">d-SEAMS</span>
+      </a>
+      <nav class="topbar-nav" aria-label="Primary">
+        <a href="#install">Install</a>
+        <a href="#output">Output</a>
+        <a href="#science">Methods</a>
+        <details class="docs-dropdown">
+          <summary>Docs</summary>
+          <div class="docs-menu">
+            <a href="https://docs.dseams.info/">Engine &amp; CLI</a>
+            <a href="https://python.dseams.info/">Python</a>
+            <a href="https://rust.dseams.info/">Rust</a>
+            <a href="https://julia.dseams.info/">Julia</a>
+            <a href="https://r.dseams.info/">R</a>
+            <a href="https://lua.dseams.info/">Lua / Fennel</a>
+            <a href="https://fortran.dseams.info/">Fortran</a>
+            <a href="https://plumed.dseams.info/">PLUMED</a>
+            <a href="https://linkcell.dseams.info/">linkcell</a>
+          </div>
+        </details>
+        <a href="https://wiki.dseams.info/">Wiki</a>
+        <a href="#cite">Cite</a>
+        <a href="https://github.com/d-SEAMS">GitHub</a>
+      </nav>
+    </div>
   </header>
 
   <main id="main-content" tabindex="-1">
     <section class="hero">
-      <img class="hero-cage" src="images/logo/dSeamsLogo.png" width="343" height="358" alt="d-SEAMS hexagonal ice cage">
-      <div class="hero-copy">
-        <p class="eyebrow">Deferred Structural Elucidation Analysis for Molecular Simulations</p>
-        <h1>Classify ice in MD trajectories.</h1>
-        <p class="lede">Version 2.14.0 is the <code>seams-core</code> engine and the <code>seams</code> CLI. Python, Lua, R, Julia, Rust, Fortran, PLUMED, and linkcell live in their own repositories. 2.x has an expanded team.</p>
-        <p class="actions">
-          <a class="btn btn-primary" href="https://docs.dseams.info">Read the docs</a>
-          <a class="btn" href="https://github.com/d-SEAMS/seams-core">seams-core</a>
-        </p>
+      <div class="shell hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">
+            <svg class="hex-glyph" width="14" height="16" viewBox="0 0 14 16" aria-hidden="true">
+              <polygon points="7,1 13,4.5 13,11.5 7,15 1,11.5 1,4.5" fill="none" stroke="currentColor" stroke-width="1.6"/>
+            </svg>
+            Molecular dynamics - Ice, clathrates &amp; rings
+          </p>
+          <h1>Classify ice and cages in MD trajectories.</h1>
+          <p class="lede">
+            One C++ engine (<code>seams-core</code>) has native bindings across Python, Rust, Julia, R, Lua, Fortran, and PLUMED. Use the CHILL+ local-structure algorithm to label ice phases. Isolate hexagonal and double-diamond cages, and trace primitive rings.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#install">Install &amp; run</a>
+            <a class="btn btn-secondary" href="https://docs.dseams.info/">Read engine docs</a>
+          </div>
+          <p class="compat-line">Reads LAMMPS, GROMACS, OpenMM, the <code>.xyz</code> format, and <code>.con</code> via <code>readcon-core</code>; adapters support MDAnalysis, Open Visualization Tool (OVITO), and ASE.</p>
+        </div>
+
+        <div class="hero-stage">
+          <figure class="compare-card">
+            <div class="compare-head">
+              <span class="compare-title"><code>interface_f0.lammpstrj</code> - 864 waters (23 by 22 by 53 A)</span>
+              <span class="compare-mode" id="compare-readout">Raw O / CHILL+</span>
+            </div>
+            <div class="compare-viewport" id="compare-viewport">
+              <picture>
+                <source srcset="images/science/gallery-interface-raw-640.webp 640w, images/science/gallery-interface-raw-760.webp 760w, images/science/gallery-interface-raw.webp 1200w" sizes="(max-width: 960px) 92vw, 580px" type="image/webp">
+                <img class="compare-img compare-base" src="images/science/gallery-interface-raw.png" width="1200" height="900" fetchpriority="high" alt="Unclassified 864-water molecular dynamics frame rendered as uniform oxygen spheres">
+              </picture>
+              <div class="compare-after">
+                <picture>
+                  <source srcset="images/science/gallery-interface-640.webp 640w, images/science/gallery-interface-760.webp 760w, images/science/gallery-interface.webp 1200w" sizes="(max-width: 960px) 92vw, 580px" type="image/webp">
+                  <img class="compare-img compare-overlay" src="images/science/gallery-interface.png" width="1200" height="900" fetchpriority="high" alt="Same 864-water interface classified by CHILL+ into 352 hexagonal, 434 water, 49 interfacial, 25 interclathrate, 3 clathrate, and 1 cubic molecules">
+                </picture>
+              </div>
+              <input class="compare-range" id="compare-range" type="range" min="0" max="100" value="50" aria-label="Slide left or right to compare unclassified oxygen atoms on the left with CHILL+ phase labels on the right">
+              <div class="compare-divider" aria-hidden="true">
+                <span class="compare-knob">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path d="M5.5 4L2 8l3.5 4M10.5 4L14 8l-3.5 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+              </div>
+              <span class="stage-tag stage-tag-left" aria-hidden="true">Raw frame</span>
+              <span class="stage-tag stage-tag-right" aria-hidden="true">seams chill-plus</span>
+            </div>
+            <div class="compare-controls" role="group" aria-label="Comparison presets">
+              <button type="button" class="preset-btn" data-split="100">Raw frame</button>
+              <button type="button" class="preset-btn is-active" data-split="50" aria-pressed="true">50 / 50 split</button>
+              <button type="button" class="preset-btn" data-split="0">CHILL+ labels</button>
+            </div>
+            <figcaption class="census-strip">
+              <span class="census-item"><i class="swatch swatch-ih" aria-hidden="true"></i>hexagonal 352</span>
+              <span class="census-item"><i class="swatch swatch-water" aria-hidden="true"></i>water 434</span>
+              <span class="census-item"><i class="swatch swatch-iface" aria-hidden="true"></i>interfacial 49</span>
+              <span class="census-item"><i class="swatch swatch-ic" aria-hidden="true"></i>cubic 1</span>
+              <span class="census-item"><i class="swatch swatch-clath" aria-hidden="true"></i>clathrate 3</span>
+              <span class="census-item"><i class="swatch swatch-iclath" aria-hidden="true"></i>interclathrate 25</span>
+            </figcaption>
+          </figure>
+        </div>
       </div>
     </section>
 
-    <section class="v2" id="v2">
-      <p class="eyebrow">2.x</p>
-      <h2>One engine. Named packages.</h2>
-      <p class="lede">Users install the public names below. Install and API detail live on <a href="https://docs.dseams.info">docs.dseams.info</a> and the binding books.</p>
-      <div class="then-now">
-        <article>
-          <h3>1.x / 2020</h3>
-          <p>One <code>yodaStruct</code> executable. YAML plus Lua. JCIM paper.</p>
-        </article>
-        <article>
-          <h3>2.x</h3>
-          <p><code>seams</code> CLI from seams-core v2.14.0. <code>pydseamslib</code> on PyPI, with an MDAnalysis analysis, an OVITO modifier and a Colab notebook. yodaStruct for Lua and Fennel. dseams-r, Dseams.jl, dseams-rs and dseams-fortran over the C ABI. dseams-plumed for <code>DSEAMS_CAGES</code>. linkcell for periodic kNN.</p>
-        </article>
-      </div>
-      <table class="bench">
-        <caption>Elja exclusive Xeon Platinum 8358, job 1785712. Base <code>1c8efa3</code> vs tip <code>13c95ce</code>. Times in ms, best-of. Manifest: <code>dseams2_repro/results/reference/paper_manifest-elja-1785712.json</code>.</caption>
-        <thead>
-          <tr><th>Stage</th><th>N</th><th>1.x scan</th><th>2.x</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>neighbour list</td><td>32000</td><td>862.2</td><td>43.5</td></tr>
-          <tr><td>ring index</td><td>32000</td><td>5955.5</td><td>42.4</td></tr>
-          <tr><td>CHILL+</td><td>32000</td><td>111.5</td><td>44.8</td></tr>
-          <tr><td>six-rings</td><td>4096</td><td>100.7</td><td>13.9</td></tr>
-          <tr><td>findHC</td><td>4096</td><td>3582.9</td><td>45.2</td></tr>
-        </tbody>
-      </table>
-    </section>
+    <section class="band band-install" id="install">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">One engine - Eight install paths</p>
+            <h2>Install and run in your language</h2>
+          </div>
+          <p class="section-note">Select a front for its install command, minimal working call, and reference book.</p>
+        </div>
 
-    <section class="suite" id="suite">
-      <h2>The suite</h2>
-      <ul class="cards">
-        <li>
-          <article>
-            <img src="images/logo/dSeamsLogo.png" width="72" height="75" alt="">
-            <h3><a href="https://github.com/d-SEAMS/seams-core">seams-core</a></h3>
-            <p>v2.14.0. The <code>seams</code> CLI on the C++ engine: cages, CHILL+, topology keys, ions, guests, and per-atom dumps for OVITO or VMD. Each language binding releases under the seams-core version it builds against.</p>
-            <p class="more"><a href="https://docs.dseams.info">docs</a></p>
-          </article>
-        </li>
-        <li>
-          <article>
-            <img src="images/logo/pydseams.png" width="72" height="72" alt="">
-            <h3><a href="https://github.com/d-SEAMS/PydSEAMSlib">pydseamslib</a></h3>
-            <p><code>pip install pydseamslib</code>; <code>import pydseams</code>. Frame API, features for deeptime and PyEMMA, ion and guest helpers, <code>pydseams.adapters</code> for MDAnalysis and OVITO.</p>
-            <p class="more"><a href="https://d-seams.github.io/PydSEAMSlib/">book</a></p>
-          </article>
-        </li>
-        <li>
-          <article>
-            <img src="images/logo/dseams.png" width="72" height="72" alt="">
-            <h3><a href="https://github.com/d-SEAMS/yodaStruct">yodaStruct</a></h3>
-            <p>Lua and Fennel. <code>require("dseams")</code>.</p>
-            <p class="more"><a href="https://d-seams.github.io/yodaStruct/">book</a></p>
-          </article>
-        </li>
-        <li>
-          <article>
-            <img src="images/logo/dseams.png" width="72" height="72" alt="">
-            <h3>R, Julia, Rust, Fortran</h3>
-            <p><a href="https://github.com/d-SEAMS/dseams-r">dseams-r</a>, <a href="https://github.com/d-SEAMS/Dseams.jl">Dseams.jl</a>, <a href="https://github.com/d-SEAMS/dseams-rs">dseams-rs</a> and <a href="https://github.com/d-SEAMS/dseams-fortran">dseams-fortran</a> call the engine through its C ABI.</p>
-          </article>
-        </li>
-        <li>
-          <article>
-            <img src="images/logo/dSeamsLogo.png" width="72" height="75" alt="">
-            <h3><a href="https://github.com/d-SEAMS/dseams-plumed">dseams-plumed</a></h3>
-            <p>v0.3.1. The <code>DSEAMS_CAGES</code> PLUMED action: cage counts, ion classes, key libraries and filled cages on the fly.</p>
-          </article>
-        </li>
-        <li>
-          <article>
-            <img src="images/logo/linkcell.svg" width="72" height="72" alt="">
-            <h3><a href="https://github.com/d-SEAMS/linkcell">linkcell</a></h3>
-            <p>Periodic linked-cell k-nearest neighbours for Rust, C, C++, and Python.</p>
-          </article>
-        </li>
-        <li>
-          <article>
-            <img src="images/logo/dseams.png" width="72" height="72" alt="">
-            <h3><a href="https://github.com/lode-org/readcon-core">readcon-core</a></h3>
-            <p>CON input. Repository: lode-org/readcon-core.</p>
-          </article>
-        </li>
-      </ul>
-    </section>
+        <div class="lang-switcher" data-lang-switcher>
+          <div class="lang-tabs" role="tablist" aria-label="Language interfaces">
+            <button type="button" role="tab" id="tab-python" aria-controls="panel-python" aria-selected="true" class="lang-tab is-active">Python</button>
+            <button type="button" role="tab" id="tab-cli" aria-controls="panel-cli" aria-selected="false" class="lang-tab" tabindex="-1">CLI / C++</button>
+            <button type="button" role="tab" id="tab-rust" aria-controls="panel-rust" aria-selected="false" class="lang-tab" tabindex="-1">Rust</button>
+            <button type="button" role="tab" id="tab-r" aria-controls="panel-r" aria-selected="false" class="lang-tab" tabindex="-1">R</button>
+            <button type="button" role="tab" id="tab-lua" aria-controls="panel-lua" aria-selected="false" class="lang-tab" tabindex="-1">Lua</button>
+            <button type="button" role="tab" id="tab-fortran" aria-controls="panel-fortran" aria-selected="false" class="lang-tab" tabindex="-1">Fortran</button>
+            <button type="button" role="tab" id="tab-plumed" aria-controls="panel-plumed" aria-selected="false" class="lang-tab" tabindex="-1">PLUMED</button>
+            <button type="button" role="tab" id="tab-linkcell" aria-controls="panel-linkcell" aria-selected="false" class="lang-tab" tabindex="-1">linkcell</button>
+          </div>
 
-    <section class="repos" id="repos">
-      <h2>Repositories</h2>
-      <p class="lede">Twelve repositories live under <a href="https://github.com/d-SEAMS">github.com/d-SEAMS</a>: seams-core, PydSEAMSlib, yodaStruct, dseams-r, Dseams.jl, dseams-rs, dseams-fortran, linkcell, dseams-plumed, dseams2_repro, wiki and landing. The CON reader the engine embeds, readcon-core, lives with its LODE siblings under <a href="https://github.com/lode-org">lode-org</a>.</p>
-      <ul class="repo-list">
-        <li>
-          <a href="https://github.com/d-SEAMS/seams-core">d-SEAMS/seams-core</a>
-          <span>engine and <code>seams</code> CLI</span>
-        </li>
-        <li>
-          <a href="https://github.com/d-SEAMS/PydSEAMSlib">d-SEAMS/PydSEAMSlib</a>
-          <span>Python binding</span>
-        </li>
-        <li>
-          <a href="https://github.com/d-SEAMS/yodaStruct">d-SEAMS/yodaStruct</a>
-          <span>Lua and Fennel</span>
-        </li>
-        <li>
-          <a href="https://github.com/d-SEAMS/dseams-r">d-SEAMS/dseams-r</a>
-          <span>R binding</span>
-        </li>
-        <li>
-          <a href="https://github.com/d-SEAMS/Dseams.jl">d-SEAMS/Dseams.jl</a>
-          <span>Julia binding</span>
-        </li>
-        <li>
-          <a href="https://github.com/d-SEAMS/dseams-rs">d-SEAMS/dseams-rs</a>
-          <span>Rust binding</span>
-        </li>
-        <li>
-          <a href="https://github.com/d-SEAMS/dseams-fortran">d-SEAMS/dseams-fortran</a>
-          <span>Fortran binding</span>
-        </li>
-        <li>
-          <a href="https://github.com/d-SEAMS/linkcell">d-SEAMS/linkcell</a>
-          <span>periodic kNN crate</span>
-        </li>
-        <li>
-          <a href="https://github.com/d-SEAMS/wiki">d-SEAMS/wiki</a>
-          <span>process and examples</span>
-        </li>
-        <li>
-          <a href="https://github.com/d-SEAMS/landing">d-SEAMS/landing</a>
-          <span>this site</span>
-        </li>
-        <li>
-          <a href="https://github.com/d-SEAMS/dseams-plumed">d-SEAMS/dseams-plumed</a>
-          <span><code>DSEAMS_CAGES</code></span>
-        </li>
-        <li>
-          <a href="https://github.com/d-SEAMS/dseams2_repro">d-SEAMS/dseams2_repro</a>
-          <span>reproducibility package</span>
-        </li>
-        <li>
-          <a href="https://github.com/lode-org/readcon-core">lode-org/readcon-core</a>
-          <span>CON input</span>
-        </li>
-      </ul>
-    </section>
+          <div class="lang-panels">
+            <article class="lang-panel is-active" id="panel-python" role="tabpanel" aria-labelledby="tab-python">
+              <div class="panel-top">
+                <div>
+                  <h3>Python (<code>pydseamslib</code>)</h3>
+                  <p>Frame API, NumPy arrays, Steinhardt features, and adapters for MDAnalysis, OVITO, and ASE.</p>
+                </div>
+                <a class="book-link" href="https://python.dseams.info/">Open Python book</a>
+              </div>
+              <div class="cmd-row">
+                <pre class="cmd-box"><code>pip install pydseamslib</code></pre>
+                <button type="button" class="copy-btn" data-copy="pip install pydseamslib">Copy</button>
+              </div>
+              <pre class="code-box"><code>import pydseams as ds
 
-    <section class="use" id="use">
-      <h2>Call it</h2>
-      <p class="lede">Install the Python wheel with <code>pip install pydseamslib</code>; the import remains <code>pydseams</code>. The <code>seams</code> CLI commands are read, chill, chill-plus, ovito-chill+, cages, symmetry, rings, prisms, cluster, fingerprint, ions, f4, steinhardt, rdf, cn, hbonds, pairs, density-z, and domains.</p>
-      <div class="snips">
-        <figure>
-          <figcaption>CLI</figcaption>
-          <pre><code>seams read water.lammpstrj
-seams chill-plus water.lammpstrj --cutoff 3.5
-seams cages water.lammpstrj</code></pre>
-        </figure>
-        <figure>
-          <figcaption>Python</figcaption>
-          <pre><code>import pydseams as ds
 frame = ds.read("water.lammpstrj")
 print(frame.chill_plus())
 print(frame.cages())</code></pre>
-        </figure>
-        <figure>
-          <figcaption>Lua</figcaption>
-          <pre><code>local dseams = require("dseams")
+            </article>
+
+            <article class="lang-panel" id="panel-cli" role="tabpanel" aria-labelledby="tab-cli" hidden>
+              <div class="panel-top">
+                <div>
+                  <h3>CLI &amp; C++ Engine (<code>seams-core</code>)</h3>
+                  <p>Build <code>seams</code> and <code>libseams</code> from source for CHILL+, cages, rings, and trajectory dumps.</p>
+                </div>
+                <a class="book-link" href="https://docs.dseams.info/">Open Engine book</a>
+              </div>
+              <div class="cmd-row">
+                <pre class="cmd-box"><code>git clone https://github.com/d-SEAMS/seams-core &amp;&amp; cd seams-core &amp;&amp; pixi run build</code></pre>
+                <button type="button" class="copy-btn" data-copy="git clone https://github.com/d-SEAMS/seams-core && cd seams-core && pixi run build">Copy</button>
+              </div>
+              <pre class="code-box"><code>./bbdir/seams chill-plus input/traj/interface_f0.lammpstrj --cutoff 3.5 --type 1 --layers --axis 2
+./bbdir/seams cages input/traj/genice_sII.lammpstrj --cutoff 3.5 --type 1 --graph cutoff --signature 512+51264</code></pre>
+            </article>
+
+            <article class="lang-panel" id="panel-rust" role="tabpanel" aria-labelledby="tab-rust" hidden>
+              <div class="panel-top">
+                <div>
+                  <h3>Rust (<code>dseams</code>)</h3>
+                  <p>Safe handles, typed options structs, and zero-overhead access to CHILL+, rings, and cages.</p>
+                </div>
+                <a class="book-link" href="https://rust.dseams.info/">Open Rust book</a>
+              </div>
+              <div class="cmd-row">
+                <pre class="cmd-box"><code>cargo add dseams --features bundled</code></pre>
+                <button type="button" class="copy-btn" data-copy="cargo add dseams --features bundled">Copy</button>
+              </div>
+              <pre class="code-box"><code>let (xyz, edge) = seams::diamond8();
+let mut system = seams::System::new()?;
+system.set_ortho(&amp;xyz, edge, edge, edge)?;
+let ice = system.chill_plus(&amp;seams::ChillOptions::default())?;</code></pre>
+            </article>
+
+            <article class="lang-panel" id="panel-r" role="tabpanel" aria-labelledby="tab-r" hidden>
+              <div class="panel-top">
+                <div>
+                  <h3>R (<code>dseams-r</code>)</h3>
+                  <p>Self-contained R interface returning data frames and tables for CHILL+ labels and ring histograms.</p>
+                </div>
+                <a class="book-link" href="https://r.dseams.info/">Open R book</a>
+              </div>
+              <div class="cmd-row">
+                <pre class="cmd-box"><code>install.packages("remotes", repos = "https://cloud.r-project.org")
+remotes::install_github("d-SEAMS/dseams-r")</code></pre>
+                <button type="button" class="copy-btn" data-copy='install.packages("remotes", repos = "https://cloud.r-project.org")
+remotes::install_github("d-SEAMS/dseams-r")'>Copy</button>
+              </div>
+              <pre class="code-box"><code>library(dseams)
+
+frame &lt;- read_frame(dseams_example("ice1h.lammpstrj"), type = -1L)
+table(chill_plus(frame)$name)
+primitive_rings(frame, graph = "cutoff", max_depth = 6L)</code></pre>
+            </article>
+
+            <article class="lang-panel" id="panel-lua" role="tabpanel" aria-labelledby="tab-lua" hidden>
+              <div class="panel-top">
+                <div>
+                  <h3>Lua &amp; Fennel (<code>yodaStruct</code>)</h3>
+                  <p>Scriptable Lua and Fennel module over the engine workflows via <code>require("dseams")</code>.</p>
+                </div>
+                <a class="book-link" href="https://lua.dseams.info/">Open Lua book</a>
+              </div>
+              <div class="cmd-row">
+                <pre class="cmd-box"><code>git clone https://github.com/d-SEAMS/yodaStruct &amp;&amp; cd yodaStruct &amp;&amp; meson setup bbdir --wrap-mode=nofallback &amp;&amp; meson compile -C bbdir
+export LUA_PATH="$PWD/lua/?.lua;;" LUA_CPATH="$PWD/bbdir/?.so;;"</code></pre>
+                <button type="button" class="copy-btn" data-copy='git clone https://github.com/d-SEAMS/yodaStruct &amp;&amp; cd yodaStruct &amp;&amp; meson setup bbdir --wrap-mode=nofallback &amp;&amp; meson compile -C bbdir
+export LUA_PATH="$PWD/lua/?.lua;;" LUA_CPATH="$PWD/bbdir/?.so;;"'>Copy</button>
+              </div>
+              <pre class="code-box"><code>local dseams = require("dseams")
 local cloud = dseams.read("water.lammpstrj")
 print(dseams.chill_plus(cloud, {cutoff = 3.5}))</code></pre>
-        </figure>
+            </article>
+
+            <article class="lang-panel" id="panel-fortran" role="tabpanel" aria-labelledby="tab-fortran" hidden>
+              <div class="panel-top">
+                <div>
+                  <h3>Fortran (<code>dseams-fortran</code>)</h3>
+                  <p>Modern Fortran fpm package with derived-type frame handles over <code>iso_c_binding</code>.</p>
+                </div>
+                <a class="book-link" href="https://fortran.dseams.info/">Open Fortran book</a>
+              </div>
+              <div class="cmd-row">
+                <pre class="cmd-box"><code>dseams = { git = "https://github.com/d-SEAMS/dseams-fortran" }</code></pre>
+                <button type="button" class="copy-btn" data-copy='dseams = { git = "https://github.com/d-SEAMS/dseams-fortran" }'>Copy</button>
+              </div>
+              <pre class="code-box"><code>use seams
+type(seams_frame) :: frame
+frame = new_frame()
+call frame%set_ortho(xyz, lx, ly, lz)
+call frame%chill_plus(labels, counts)</code></pre>
+            </article>
+
+            <article class="lang-panel" id="panel-plumed" role="tabpanel" aria-labelledby="tab-plumed" hidden>
+              <div class="panel-top">
+                <div>
+                  <h3>PLUMED (<code>dseams-plumed</code>)</h3>
+                  <p>Loadable <code>DSEAMS_CAGES</code> collective variable reporting cage occupancy, largest cluster, and CHILL+ counts on the fly.</p>
+                </div>
+                <a class="book-link" href="https://plumed.dseams.info/">Open PLUMED book</a>
+              </div>
+              <div class="cmd-row">
+                <pre class="cmd-box"><code>git clone https://github.com/d-SEAMS/dseams-plumed && cd dseams-plumed && pixi run build</code></pre>
+                <button type="button" class="copy-btn" data-copy="git clone https://github.com/d-SEAMS/dseams-plumed && cd dseams-plumed && pixi run build">Copy</button>
+              </div>
+              <pre class="code-box"><code>LOAD FILE=./libdseams_plumed.so
+ice: DSEAMS_CAGES ATOMS=1-4096 CUTOFF=3.5 COMPLETE
+PRINT ARG=ice.nice,ice.nmax,ice.chillice,ice.chillmax STRIDE=100 FILE=ICE</code></pre>
+            </article>
+
+            <article class="lang-panel" id="panel-linkcell" role="tabpanel" aria-labelledby="tab-linkcell" hidden>
+              <div class="panel-top">
+                <div>
+                  <h3>Periodic kNN (<code>linkcell</code>)</h3>
+                  <p>Orthogonal and triclinic periodic linked-cell k-nearest neighbours and cutoff pair lists for Rust, C, C++, and Python.</p>
+                </div>
+                <a class="book-link" href="https://linkcell.dseams.info/">Open linkcell book</a>
+              </div>
+              <div class="cmd-row">
+                <pre class="cmd-box"><code>pip install linkcell numpy</code></pre>
+                <button type="button" class="copy-btn" data-copy="pip install linkcell numpy">Copy</button>
+              </div>
+              <pre class="code-box"><code>import linkcell, numpy as np
+xyz = np.array([[0.2, 0.0, 0.0], [9.4, 0.0, 0.0]])
+cell = np.array([10.0, 10.0, 10.0])
+nn, d2 = linkcell.knearest(xyz, cell, 1)</code></pre>
+            </article>
+          </div>
+        </div>
+
+        <nav class="books-strip" aria-label="Language documentation books">
+          <a href="https://docs.dseams.info/">docs.dseams.info</a>
+          <a href="https://python.dseams.info/">python.dseams.info</a>
+          <a href="https://rust.dseams.info/">rust.dseams.info</a>
+          <a href="https://julia.dseams.info/">julia.dseams.info</a>
+          <a href="https://r.dseams.info/">r.dseams.info</a>
+          <a href="https://lua.dseams.info/">lua.dseams.info</a>
+          <a href="https://fortran.dseams.info/">fortran.dseams.info</a>
+          <a href="https://plumed.dseams.info/">plumed.dseams.info</a>
+          <a href="https://linkcell.dseams.info/">linkcell.dseams.info</a>
+        </nav>
       </div>
     </section>
 
-    <section class="science" id="classifiers">
-      <h2>Two classifiers</h2>
-      <div class="two">
-        <article>
-          <h3>CHILL+</h3>
-          <p>Four-neighbour star. Labels cubic, hexagonal, interfacial, clathrate, and water. It does not assign cage membership.</p>
-        </article>
-        <article>
-          <h3>Cages</h3>
-          <p>Hexagonal cages (HC) are ice Ih. Double-diamond cages (DDC) are ice Ic. Everything else is water on that score.</p>
-        </article>
-      </div>
-      <div class="stills">
-        <figure>
-          <img src="images/dSEAMS/image7.png" alt="Cubic, hexagonal, and interfacial ice forming on a surface">
-          <figcaption>Ic, Ih, and interfacial ice on a surface.</figcaption>
-        </figure>
-        <figure>
-          <img src="images/dSEAMS/hcRings.jpg" alt="Hexagonal ice as a topological ring network">
-          <figcaption>Pure hexagonal ice as a ring network.</figcaption>
-        </figure>
-        <figure>
-          <img src="images/dSEAMS/superRainbowGraph.png" alt="Radial distribution plots of a bulk system at several temperatures">
-          <figcaption>Radial distribution of a bulk system at several temperatures.</figcaption>
-        </figure>
-        <figure>
-          <img src="images/dSEAMS/finalSeed.png" alt="Ice type analysis in OVITO">
-          <figcaption>Ice type analysis in OVITO.</figcaption>
-        </figure>
-        <figure>
-          <img src="images/dSEAMS/configYML.png" alt="YAML options for a run">
-          <figcaption>YAML options for a run.</figcaption>
-        </figure>
-        <figure>
-          <img src="images/dSEAMS/luaFunc.png" alt="Lua modules loaded without recompilation">
-          <figcaption>Lua modules without recompilation.</figcaption>
-        </figure>
+    <section class="band band-output" id="output">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Code to structure</p>
+            <h2>Real output alongside its render</h2>
+          </div>
+          <p class="section-note">Exact cage and phase counts computed directly on bundled hydrate and interface trajectories.</p>
+        </div>
+
+        <div class="specimen-grid">
+          <div class="specimen-code">
+            <div class="specimen-label">Hydrate cage census - <code>genice_sII</code> &amp; <code>genice_sH</code> (136 waters, cutoff 3.5 A)</div>
+            <pre class="code-box"><code>$ ./bbdir/seams cages input/traj/genice_sII.lammpstrj --cutoff 3.5 --type 1 --graph cutoff --signature 512+51264
+nop 136 graph cutoff signature 5:12 cages 16 atoms 136
+nop 136 graph cutoff signature 5:12,6:4 cages 8 atoms 128
+
+$ ./bbdir/seams cages input/traj/genice_sH.lammpstrj --cutoff 3.5 --type 1 --graph cutoff --signature 512+sh+51268
+nop 136 graph cutoff signature 5:12 cages 12 atoms 136
+nop 136 graph cutoff signature 4:3,5:6,6:3 cages 8 atoms 112
+nop 136 graph cutoff signature 5:12,6:8 cages 4 atoms 120
+
+$ ./bbdir/seams chill-plus input/traj/interface_f0.lammpstrj --cutoff 3.5 --type 1 --layers --axis 2
+nop 864 clathrate 3 cubic 1 hexagonal 352 interClathrate 25 interfacial 49 water 434
+phi-c 0.00283286 stack HHHHHHHH....C.</code></pre>
+            <p class="specimen-note">
+              One sII unit cell resolves 16 pentagonal dodecahedra (5<sup>12</sup>) and 8 hexakaidecahedra (5<sup>12</sup>6<sup>4</sup>). An sH host resolves 12 small (5<sup>12</sup>), 8 medium (4<sup>3</sup>5<sup>6</sup>6<sup>3</sup>), and 4 large (5<sup>12</sup>6<sup>8</sup>) cages across the triclinic tilt.
+            </p>
+          </div>
+          <figure class="specimen-figure">
+            <picture>
+              <source srcset="images/science/sii-480.webp 480w, images/science/sii.webp 780w" sizes="(max-width: 960px) 88vw, 420px" type="image/webp">
+              <img src="images/science/sii.png" width="780" height="899" decoding="async" fetchpriority="low" alt="Structure II clathrate hydrate render showing 16 orange 5^12 cages and 8 blue 5^12 6^4 cages">
+            </picture>
+            <figcaption>sII hydrate unit cell: 5<sup>12</sup> cages (amber) and 5<sup>12</sup>6<sup>4</sup> cages (blue), matching the 16 : 8 census.</figcaption>
+          </figure>
+        </div>
       </div>
     </section>
 
-    <section class="walk" id="walk">
-      <h2>Demos</h2>
-      <div class="then-now">
-        <article>
-          <h3>1.x</h3>
-          <p>The published nix install of the single <code>yodaStruct</code> binary.</p>
-        </article>
-        <article>
-          <h3>2.x</h3>
-          <p>The 2.x recording runs <code>seams cages</code>, <code>pip install pydseamslib</code> with <code>import pydseams</code>, and <code>require("dseams")</code>. The package books document each complete API.</p>
-        </article>
+    <section class="band band-science" id="science">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Topological &amp; local order methods</p>
+            <h2>What d-SEAMS resolves</h2>
+          </div>
+          <p class="section-note">Combine four-neighbour local parameters with full ring and polyhedral graph topology.</p>
+        </div>
+
+        <div class="science-grid">
+          <article class="science-card">
+            <figure>
+              <picture>
+                <source srcset="images/dSEAMS/image7-480.webp 480w, images/dSEAMS/image7.webp 848w" sizes="(max-width: 960px) 88vw, 340px" type="image/webp">
+                <img src="images/dSEAMS/image7.png" width="848" height="755" decoding="async" fetchpriority="low" alt="Cubic, hexagonal, and interfacial ice layers forming against liquid water">
+              </picture>
+            </figure>
+            <div class="science-body">
+              <h3>CHILL+ &amp; Ice Interfaces</h3>
+              <p>Classify cubic (Ic), hexagonal (Ih), interfacial, clathrate, interclathrate, and liquid water molecules using bond-orientational correlations and basal-layer stacking profiles.</p>
+              <a href="https://docs.dseams.info/tutorials/interface.html">Interface tutorial</a>
+            </div>
+          </article>
+
+          <article class="science-card">
+            <figure>
+              <picture>
+                <source srcset="images/science/gallery-rings-640.webp 640w, images/science/gallery-rings-760.webp 760w, images/science/gallery-rings.webp 1200w" sizes="(max-width: 960px) 88vw, 340px" type="image/webp">
+                <img src="images/science/gallery-rings.png" width="1200" height="900" decoding="async" fetchpriority="low" alt="4096-molecule cubic ice ring network showing 8192 six-membered primitive rings">
+              </picture>
+            </figure>
+            <div class="science-body">
+              <h3>Primitive Rings</h3>
+              <p>Enumerate shortest-path primitive rings over periodic cutoff graphs (8,192 six-rings in a 4,096-water cubic-ice frame) and separate strained geometries from bulk ice.</p>
+              <a href="https://docs.dseams.info/tutorials/rings.html">Rings tutorial</a>
+            </div>
+          </article>
+
+          <article class="science-card">
+            <figure>
+              <picture>
+                <source srcset="images/science/gallery-cages-sII-640.webp 640w, images/science/gallery-cages-sII-760.webp 760w, images/science/gallery-cages-sII.webp 1200w" sizes="(max-width: 960px) 88vw, 340px" type="image/webp">
+                <img src="images/science/gallery-cages-sII.png" width="1200" height="900" decoding="async" fetchpriority="low" alt="Structure II clathrate water ring network showing small and large cages">
+              </picture>
+            </figure>
+            <div class="science-body">
+              <h3>HC, DDC &amp; Clathrate Cages</h3>
+              <p>Isolate hexagonal cages (HC), double-diamond cages (DDC), and sI / sII / sH polyhedral hydrate cages with guest occupancy and brine-front ion tracking.</p>
+              <a href="https://docs.dseams.info/science/cages.html">Cages reference</a>
+            </div>
+          </article>
+        </div>
       </div>
-      <p class="lede">1.x recording</p>
-      <div class="cast">
-        <script id="asciicast-4KAQce0vldH90WcANWBDACSwD" src="https://asciinema.org/a/4KAQce0vldH90WcANWBDACSwD.js" async></script>
-      </div>
-      <p class="lede">2.x recording</p>
-      <div class="cast" id="cast-2x" role="region" aria-label="d-SEAMS 2.x terminal demo"></div>
-      <p><a href="casts/dseams-2x.cast">Download the 2.x recording</a></p>
     </section>
 
-    <section class="cite" id="cite">
-      <h2>Cite</h2>
-      <p>
-        Goswami, R.; Goswami, A.; Singh, J. K.
-        <cite>d-SEAMS: Deferred Structural Elucidation Analysis for Molecular Simulations.</cite>
-        <i>J. Chem. Inf. Model.</i> <b>2020</b>.
-        <a href="https://doi.org/10.1021/acs.jcim.0c00031">10.1021/acs.jcim.0c00031</a>
-        /
-        <a href="https://arxiv.org/abs/1909.09830">arXiv:1909.09830</a>
-      </p>
-      <p>Software 2.x authors are listed in each package's <code>CITATION.cff</code>. The reproducibility package is <a href="https://github.com/d-SEAMS/dseams2_repro">dseams2_repro</a>.</p>
+    <section class="band band-cite" id="cite">
+      <div class="shell cite-grid">
+        <div class="cite-primary">
+          <p class="eyebrow">Citation &amp; provenance</p>
+          <h2>Cite d-SEAMS</h2>
+          <p class="cite-ref">
+            Goswami, R.; Goswami, A.; Singh, J. K.
+            <cite>d-SEAMS: Deferred Structural Elucidation Analysis for Molecular Simulations.</cite>
+            <i>J. Chem. Inf. Model.</i> <b>2020</b>, 60 (4), 2169-2177.
+          </p>
+          <div class="cite-links">
+            <a class="pill-link" href="https://doi.org/10.1021/acs.jcim.0c00031">Digital Object Identifier (DOI): 10.1021/acs.jcim.0c00031</a>
+            <a class="pill-link" href="https://arxiv.org/abs/1909.09830">arXiv:1909.09830</a>
+            <a class="pill-link" href="https://github.com/d-SEAMS/dseams2_repro">Reproducibility archive</a>
+          </div>
+          <div class="bibtex-box">
+            <div class="bibtex-head">
+              <span>BibTeX</span>
+              <button type="button" class="copy-btn" id="copy-bibtex-btn" data-copy="@Article{Goswami2020,
+  author  = {Goswami, Rohit and Goswami, Amrita and Singh, Jayant Kumar},
+  title   = {{d-SEAMS}: Deferred Structural Elucidation Analysis for Molecular Simulations},
+  journal = {Journal of Chemical Information and Modeling},
+  year    = {2020},
+  volume  = {60},
+  number  = {4},
+  pages   = {2169--2177},
+  doi     = {10.1021/acs.jcim.0c00031}
+}">Copy BibTeX</button>
+            </div>
+            <pre id="bibtex-code"><code>@Article{Goswami2020,
+  author  = {Goswami, Rohit and Goswami, Amrita and Singh, Jayant Kumar},
+  title   = {{d-SEAMS}: Deferred Structural Elucidation Analysis for Molecular Simulations},
+  journal = {Journal of Chemical Information and Modeling},
+  year    = {2020},
+  volume  = {60},
+  number  = {4},
+  pages   = {2169--2177},
+  doi     = {10.1021/acs.jcim.0c00031}
+}</code></pre>
+          </div>
+          <p class="sr-live" id="copy-status" role="status" aria-live="polite"></p>
+        </div>
+
+        <aside class="trust-panel" aria-label="Open science records and resources">
+          <h3>Open data &amp; governance</h3>
+          <ul class="trust-list">
+            <li>
+              <a href="https://figshare.com/projects/d-SEAMS_Datasets/73545">Figshare Trajectory Datasets</a>
+              <span>Benchmark mW and TIP4P/Ice nucleation and interface trajectories.</span>
+            </li>
+            <li>
+              <a href="https://zenodo.org/communities/d-seams/">Zenodo d-SEAMS Community</a>
+              <span>Citable software snapshots and archival simulation records.</span>
+            </li>
+            <li>
+              <a href="https://github.com/d-SEAMS/seams-core/blob/main/CITATION.cff">CITATION.cff &amp; Contributors</a>
+              <span>Machine-readable contributor and software metadata across repositories.</span>
+            </li>
+            <li>
+              <a href="https://github.com/d-SEAMS">Massachusetts Institute of Technology (MIT) License - GitHub</a>
+              <span>This permissive license covers the open-source C++ engine and language wrappers.</span>
+            </li>
+          </ul>
+        </aside>
+      </div>
     </section>
   </main>
 
   <footer class="foot">
-    <p>MIT. Trajectories on <a href="https://figshare.com/projects/d-SEAMS_Datasets/73545">figshare</a>. Records in the <a href="https://zenodo.org/communities/d-seams/">Zenodo community</a>.</p>
-    <p>Prefer <a href="https://github.com/d-SEAMS">GitHub issues</a>.</p>
-    <p class="foot-antics">
-      Analytics by
-      <a href="https://antics.turtletech.us/" target="_blank" rel="noopener noreferrer">Antics</a>,
-      provided by
-      <a href="https://turtletech.us/" target="_blank" rel="noopener noreferrer">TurtleTech ehf</a>.
-    </p>
+    <div class="shell foot-inner">
+      <div class="foot-brand">
+        <img src="images/logo/dSeamsLogo.png" width="28" height="29" decoding="async" alt="">
+        <div>
+          <strong>d-SEAMS</strong>
+          <span>MIT License - Open-source trajectory analysis</span>
+        </div>
+      </div>
+      <nav class="foot-links" aria-label="Footer">
+        <a href="https://docs.dseams.info/">Docs</a>
+        <a href="https://python.dseams.info/">Python</a>
+        <a href="https://rust.dseams.info/">Rust</a>
+        <a href="https://julia.dseams.info/">Julia</a>
+        <a href="https://r.dseams.info/">R</a>
+        <a href="https://lua.dseams.info/">Lua</a>
+        <a href="https://fortran.dseams.info/">Fortran</a>
+        <a href="https://plumed.dseams.info/">PLUMED</a>
+        <a href="https://linkcell.dseams.info/">linkcell</a>
+        <a href="https://wiki.dseams.info/">Wiki</a>
+        <a href="https://github.com/d-SEAMS">GitHub</a>
+      </nav>
+    </div>
   </footer>
-  <script src="https://cdn.jsdelivr.net/npm/asciinema-player@3.17.0/dist/bundle/asciinema-player.min.js"></script>
-  <script>
-    AsciinemaPlayer.create("casts/dseams-2x.cast", document.getElementById("cast-2x"), {
-      preload: true,
-      fit: "width",
-      terminalFontFamily: '"IBM Plex Mono", ui-monospace, monospace'
-    });
-  </script>
+
+  <script src="js/site.js" defer></script>
 </body>
 </html>

@@ -1,0 +1,128 @@
+{
+  "packages": [
+    {
+      "id": "python",
+      "label": "Python",
+      "page_command": "pip install pydseamslib",
+      "command": "pip install pydseamslib==2.14.0",
+      "version": "2.14.0",
+      "book": "https://python.dseams.info/",
+      "registry": {
+        "kind": "pypi",
+        "name": "pydseamslib",
+        "version": "2.14.0"
+      },
+      "live": true
+    },
+    {
+      "id": "rust",
+      "label": "Rust",
+      "page_command": "cargo add dseams --features bundled",
+      "command": "cargo add dseams --features bundled",
+      "version": "2.14.0",
+      "book": "https://rust.dseams.info/",
+      "registry": {
+        "kind": "crates",
+        "name": "dseams",
+        "version": "2.14.0"
+      },
+      "live": true
+    },
+    {
+      "id": "julia",
+      "label": "Julia",
+      "version": "2.14.0",
+      "book": "https://julia.dseams.info/",
+      "registry": {
+        "kind": "julia_github",
+        "name": "Dseams.jl",
+        "version": "2.14.0"
+      },
+      "live": false
+    },
+    {
+      "id": "r",
+      "label": "R",
+      "page_command": "remotes::install_github(\"d-SEAMS/dseams-r\")",
+      "command": "install.packages(\"remotes\", repos = \"https://cloud.r-project.org\"); remotes::install_github(\"d-SEAMS/dseams-r\")",
+      "version": "2.14.0",
+      "book": "https://r.dseams.info/",
+      "registry": {
+        "kind": "cran",
+        "name": "dseams",
+        "version": "2.14.0"
+      },
+      "live": false
+    },
+    {
+      "id": "lua",
+      "label": "Lua",
+      "page_command": "meson setup bbdir --wrap-mode=nofallback",
+      "command": "meson setup bbdir --wrap-mode=nofallback && meson compile -C bbdir",
+      "version": "2.14.0",
+      "book": "https://lua.dseams.info/",
+      "registry": {
+        "kind": "luarocks",
+        "name": "dseams",
+        "version": "2.14.0"
+      },
+      "live": false
+    },
+    {
+      "id": "fortran",
+      "label": "Fortran",
+      "page_command": "git = \"https://github.com/d-SEAMS/dseams-fortran\"",
+      "command": "dseams = { git = \"https://github.com/d-SEAMS/dseams-fortran\" }",
+      "version": "2.14.0",
+      "book": "https://fortran.dseams.info/",
+      "registry": {
+        "kind": "github_tag",
+        "name": "dseams-fortran",
+        "version": "v2.14.0"
+      },
+      "live": false
+    },
+    {
+      "id": "plumed",
+      "label": "PLUMED",
+      "page_command": "pixi run build",
+      "command": "pixi run build",
+      "version": "0.4.0",
+      "book": "https://plumed.dseams.info/",
+      "registry": {
+        "kind": "github_tag",
+        "name": "dseams-plumed",
+        "version": "v0.4.0"
+      },
+      "live": false
+    },
+    {
+      "id": "engine",
+      "label": "CLI / C++",
+      "page_command": "pixi run build",
+      "command": "pixi run build",
+      "version": "2.14.0",
+      "book": "https://docs.dseams.info/",
+      "registry": {
+        "kind": "github_tag",
+        "name": "seams-core",
+        "version": "v2.14.0"
+      },
+      "live": true
+    },
+    {
+      "id": "linkcell",
+      "label": "linkcell",
+      "page_command": "pip install linkcell numpy",
+      "command": "pip install linkcell numpy",
+      "version": "0.4.2",
+      "book": "https://linkcell.dseams.info/",
+      "registry": {
+        "kind": "crates",
+        "name": "linkcell",
+        "version": "0.4.2"
+      },
+      "live": true
+    }
+  ]
+}

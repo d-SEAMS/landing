@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import argparse
+import json
+import re
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
@@ -168,121 +170,160 @@ def has_href(hrefs: list[str], needed: str) -> bool:
     return False
 
 
+INTERNAL_TEXT = (
+    (r"\belja\b", "cluster host name"),
+    (r"\bjobs?\s*#?\d{3,}", "job id"),
+    (r"\bbase\b[^.\n]{0,60}\bvs\b[^.\n]{0,60}\btip\b", "revision comparison"),
+    (r"\bpaper_manifest\b", "manifest file name"),
+    (r"results/reference", "internal results path"),
+    (r"(?<![\w./-])(?=[0-9a-f]*\d)[0-9a-f]{7,40}(?![\w-])", "commit hash or job number"),
+    (r"\bexclusive\b", "scheduler wording"),
+    (r"\bmanifest:\b", "manifest label"),
+)
+
+
+def check_internal_text(site: Path) -> list[str]:
+    failures: list[str] = []
+    for name in ("index.html", "README.md"):
+        p = site / name
+        if not p.is_file():
+            continue
+        for number, line in enumerate(p.read_text(encoding="utf-8").splitlines(), 1):
+            for pattern, label in INTERNAL_TEXT:
+                match = re.search(pattern, line, flags=re.IGNORECASE)
+                if match:
+                    failures.append(
+                        f"{name}:{number}: internal text ({label}): {match.group(0)}"
+                    )
+                    break
+    return failures
+
+
 def check_contract(site: Path, index: PageParser) -> list[str]:
     text = " ".join(index.text)
     required = (
         "pip install pydseamslib",
-        "import pydseams",
-        'require("dseams")',
-        "seams-core",
-        "yodaStruct",
-        "dseams-plumed",
-        "DSEAMS_CAGES",
-        "linkcell",
-        "readcon-core",
-        "dseams2_repro",
-        "dseams-r",
-        "Dseams.jl",
-        "dseams-rs",
+        "cargo add dseams",
+        "pip install linkcell",
+        "CHILL+",
+        "clathrate",
+        "pixi run build",
+        "remotes::install_github",
+        "meson setup bbdir --wrap-mode=nofallback",
         "dseams-fortran",
-        "2.14.0",
-        "0.3.1",
-        "density-z",
-        "chill-plus",
-        "fingerprint",
-        "topology keys",
-        "read, chill, chill-plus, ovito-chill+, cages, symmetry, rings, prisms, cluster, fingerprint, ions, f4, steinhardt, rdf, cn, hbonds, pairs, density-z, and domains",
-        "dseams2_repro/results/reference/paper_manifest-elja-1785712.json",
-        "1.x recording",
-        "2.x recording",
+        "dseams-plumed",
+    )
+    reader_forbidden = (
+        "live index",
+        "checked against",
+        "conda-forge yet",
+        "not on conda-forge",
+        "install.json",
+        "check-registries",
+        "published</td>",
+        ">published<",
+        ">source<",
+        "Status</th>",
+        "coming soon",
     )
     forbidden = (
-        "pip install pydseams ",
-        "Needs its own recording",
-        "Until that exists",
-        "Use the runnable",
-        "Software 2.2",
-        "three packages",
-        "Three packages",
+        "Elja",
+        "job 1785712",
+        "asciinema",
+        "repro/reference",
         "libyodaLib",
         "2.7.0",
-        "2.9.0",
-        "0.1.0",
-        "0.3.0",
-        "Eight repositories",
-        "repro/reference/",
+        "Antics",
+        "fonts.googleapis",
+        "gstatic.com",
     )
+    html_raw = (site / "index.html").read_text(encoding="utf-8")
     failures = [f"index.html: missing public contract: {value}" for value in required if value not in text]
     failures.extend(
         f"index.html: stale or invalid copy: {value}"
         for value in forbidden
         if value in f"{text} "
     )
+    failures.extend(
+        f"index.html: reader-facing plumbing: {value}"
+        for value in reader_forbidden
+        if value in html_raw
+    )
+    for needle in ("fonts.googleapis.com", "fonts.gstatic.com", "use.typekit.net", "cdn.jsdelivr.net/npm/@fontsource"):
+        if needle in html_raw:
+            failures.append(f"index.html: external font or player CDN: {needle}")
+    if 'loading="lazy"' in html_raw:
+        failures.append("index.html: do not lazy-load images; all figures must load eagerly")
 
     hrefs = href_values(index)
-    required_hrefs = (
-        "https://github.com/d-SEAMS/seams-core",
-        "https://github.com/d-SEAMS/PydSEAMSlib",
-        "https://github.com/d-SEAMS/yodaStruct",
-        "https://github.com/d-SEAMS/linkcell",
-        "https://github.com/d-SEAMS/wiki",
-        "https://github.com/d-SEAMS/landing",
-        "https://github.com/d-SEAMS/dseams-plumed",
-        "https://github.com/d-SEAMS/dseams2_repro",
-        "https://github.com/d-SEAMS/dseams-r",
-        "https://github.com/d-SEAMS/Dseams.jl",
-        "https://github.com/d-SEAMS/dseams-rs",
-        "https://github.com/d-SEAMS/dseams-fortran",
-        "https://github.com/lode-org/readcon-core",
+    books = (
         "https://docs.dseams.info",
-        "https://wiki.dseams.info",
-        "https://d-seams.github.io/PydSEAMSlib/",
-        "https://d-seams.github.io/yodaStruct/",
-        "https://cdn.jsdelivr.net/npm/asciinema-player@3.17.0/dist/bundle/asciinema-player.css",
-        "casts/dseams-2x.cast",
+        "https://python.dseams.info",
+        "https://rust.dseams.info",
+        "https://julia.dseams.info",
+        "https://fortran.dseams.info",
+        "https://lua.dseams.info",
+        "https://r.dseams.info",
+        "https://plumed.dseams.info",
+        "https://linkcell.dseams.info",
     )
     failures.extend(
         f"index.html: missing required href: {url}"
-        for url in required_hrefs
+        for url in books
         if not has_href(hrefs, url)
     )
 
-    srcs = [url for _tag, attribute, url in index.links if attribute == "src"]
-    required_srcs = (
-        "https://cdn.jsdelivr.net/npm/asciinema-player@3.17.0/dist/bundle/asciinema-player.min.js",
-        "https://asciinema.org/a/4KAQce0vldH90WcANWBDACSwD.js",
-    )
-    failures.extend(
-        f"index.html: missing required src: {url}"
-        for url in required_srcs
-        if url not in srcs
-    )
+    if not has_href(hrefs, "https://github.com/d-SEAMS"):
+        failures.append("index.html: missing GitHub org link")
 
-    cast = site / "casts" / "dseams-2x.cast"
-    if not cast.is_file():
-        failures.append("casts/dseams-2x.cast: missing 2.x recording")
+    logo = site / "images" / "logo" / "dSeamsLogo.png"
+    if not logo.is_file():
+        failures.append("images/logo/dSeamsLogo.png: missing logo asset")
+    elif "images/logo/dSeamsLogo.png" not in [u for _t, a, u in index.links if a == "src"]:
+        failures.append("index.html: logo must appear in img src")
+
+    manifest = site / "install.json"
+    if not manifest.is_file():
+        failures.append("install.json: missing install manifest")
     else:
-        cast_text = cast.read_text(encoding="utf-8")
-        for value in (
-            "seams",
-            "pip install pydseamslib",
-            "import pydseams",
-        ):
-            if value not in cast_text:
-                failures.append(f"casts/dseams-2x.cast: missing public contract: {value}")
-        if (
-            'require("dseams")' not in cast_text
-            and r'require(\"dseams\")' not in cast_text
-        ):
-            failures.append(
-                'casts/dseams-2x.cast: missing public contract: require("dseams")'
-            )
+        entries = json.loads(manifest.read_text(encoding="utf-8")).get("packages", [])
+        for entry in entries:
+            page_cmd = entry.get("page_command", entry.get("command", ""))
+            if page_cmd:
+                snippet = page_cmd if len(page_cmd) < 48 else page_cmd.split()[0]
+                if page_cmd not in html_raw and snippet not in html_raw:
+                    failures.append(f"install.json: page command missing on page: {page_cmd}")
+            book = (entry.get("book") or "").rstrip("/")
+            if book and not has_href(hrefs, book):
+                failures.append(f"install.json: missing book href: {book}")
+
+    for fig in (
+        "images/dSEAMS/image7.png",
+        "images/science/gallery-cages-sII.png",
+        "images/science/gallery-rings.png",
+        "images/science/gallery-interface.png",
+        "images/science/gallery-interface-raw.png",
+        "images/science/sii.png",
+    ):
+        if not (site / fig).is_file():
+            failures.append(f"{fig}: missing science still")
+
+    js_file = site / "js" / "site.js"
+    if not js_file.is_file():
+        failures.append("js/site.js: missing interactive script")
+    elif js_file.stat().st_size >= 30_720:
+        failures.append("js/site.js: exceeds 30 KB budget")
 
     css = site / "css" / "site.css"
     if not css.is_file():
         failures.append("css/site.css: missing stylesheet")
-    elif ":focus-visible" not in css.read_text(encoding="utf-8"):
-        failures.append("css/site.css: missing visible keyboard focus style")
+    else:
+        css_text = css.read_text(encoding="utf-8")
+        if ":focus-visible" not in css_text:
+            failures.append("css/site.css: missing visible keyboard focus style")
+        for bad in (".lattice", "Source Serif", "Source Sans", "fonts.googleapis"):
+            if bad in css_text:
+                failures.append(f"css/site.css: generic template marker: {bad}")
     return failures
 
 
@@ -301,7 +342,20 @@ def check_site(site: Path) -> list[str]:
     for source, page in parsed_pages.items():
         failures.extend(check_page(site, source, page))
     failures.extend(check_links(site, parsed_pages))
+    hero_src = [url for tag, attribute, url in parsed_pages[index_path].links if tag == "img" and attribute == "src"]
+    for need in (
+        "images/dSEAMS/image7.png",
+        "images/science/gallery-cages-sII.png",
+        "images/science/gallery-rings.png",
+        "images/science/gallery-interface.png",
+        "images/science/gallery-interface-raw.png",
+        "images/science/sii.png",
+        "images/logo/dSeamsLogo.png",
+    ):
+        if need not in hero_src:
+            failures.append(f"index.html: missing figure or logo src: {need}")
     failures.extend(check_contract(site, parsed_pages[index_path]))
+    failures.extend(check_internal_text(site))
     return failures
 
 
