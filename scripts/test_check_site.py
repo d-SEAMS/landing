@@ -234,6 +234,22 @@ class JsonLdTests(unittest.TestCase):
         failures = CHECK_SITE.check_jsonld_graph(graph)
         self.assertIn("index.html: invalid standalone linkcell JSON-LD node", failures)
 
+    def test_accepts_matching_software_version(self) -> None:
+        graph = self._valid_graph()
+        graph[0]["softwareVersion"] = "2.14.1"
+        entries = [{"id": "engine", "version": "2.14.1"}]
+        self.assertEqual(CHECK_SITE.check_manifest_versions(graph, entries), [])
+
+    def test_rejects_mismatched_software_version(self) -> None:
+        graph = self._valid_graph()
+        graph[0]["softwareVersion"] = "2.14.0"
+        entries = [{"id": "engine", "version": "2.14.1"}]
+        failures = CHECK_SITE.check_manifest_versions(graph, entries)
+        self.assertIn(
+            "index.html: softwareVersion '2.14.0' != install.json engine '2.14.1'",
+            failures,
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

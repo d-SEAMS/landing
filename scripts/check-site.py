@@ -605,6 +605,14 @@ def check_contract(site: Path, index: PageParser) -> list[str]:
             book = (entry.get("book") or "").rstrip("/")
             if book and not has_href(hrefs, book):
                 failures.append(f"install.json: missing book href: {book}")
+        blocks = re.findall(
+            r'<script\s+type="application/ld\+json"\s*>(.*?)</script>',
+            html_raw,
+            flags=re.IGNORECASE | re.DOTALL,
+        )
+        if len(blocks) == 1:
+            graph = json.loads(blocks[0]).get("@graph", [])
+            failures.extend(check_manifest_versions(graph, entries))
 
     for fig in (
         "images/dSEAMS/image7.png",
@@ -633,6 +641,35 @@ def check_contract(site: Path, index: PageParser) -> list[str]:
         for bad in (".lattice", "Source Serif", "Source Sans", "fonts.googleapis"):
             if bad in css_text:
                 failures.append(f"css/site.css: generic template marker: {bad}")
+    return failures
+
+
+def check_manifest_versions(graph: list[dict], entries: list[dict]) -> list[str]:
+    """Require index.html JSON-LD softwareVersion to match install.json engine."""
+
+    failures: list[str] = []
+    engine = next(
+        (entry for entry in entries if entry.get("id") == "engine"),
+        None,
+    )
+    software = next(
+        (
+            node
+            for node in graph
+            if isinstance(node, dict)
+            and node.get("@id") == "https://dseams.info/#software"
+        ),
+        None,
+    )
+    if engine is None:
+        failures.append("install.json: missing engine entry")
+    elif software is not None:
+        expected = engine.get("version")
+        actual = software.get("softwareVersion")
+        if actual != expected:
+            failures.append(
+                f"index.html: softwareVersion {actual!r} != install.json engine {expected!r}"
+            )
     return failures
 
 
