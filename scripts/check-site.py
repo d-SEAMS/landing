@@ -177,6 +177,29 @@ def has_href(hrefs: list[str], needed: str) -> bool:
     return False
 
 
+FORTHCOMING_NOTICE = re.compile(
+    r'<p\s+id=(["\'])forthcoming-paper-status\1\s*>\s*Coming soon\.\s*</p>',
+    flags=re.IGNORECASE,
+)
+
+
+def check_forthcoming_notice(source: str) -> list[str]:
+    """Permit the paper notice while rejecting release-status placeholders."""
+
+    notices = list(FORTHCOMING_NOTICE.finditer(source))
+    failures: list[str] = []
+    if len(notices) != 1:
+        failures.append(
+            "index.html: expected one exact forthcoming paper notice"
+        )
+    without_notice = FORTHCOMING_NOTICE.sub("", source)
+    if re.search(r"\bcoming\s+soon\b", without_notice, flags=re.IGNORECASE):
+        failures.append(
+            "index.html: reader-facing plumbing: coming soon"
+        )
+    return failures
+
+
 INTERNAL_TEXT = (
     (r"\belja\b", "cluster host name"),
     (r"\bjobs?\s*#?\d{3,}", "job id"),
@@ -231,7 +254,6 @@ def check_contract(site: Path, index: PageParser) -> list[str]:
         ">published<",
         ">source<",
         "Status</th>",
-        "coming soon",
     )
     forbidden = (
         "Elja",
@@ -256,6 +278,7 @@ def check_contract(site: Path, index: PageParser) -> list[str]:
         for value in reader_forbidden
         if value in html_raw
     )
+    failures.extend(check_forthcoming_notice(html_raw))
     for needle in ("fonts.googleapis.com", "fonts.gstatic.com", "use.typekit.net", "cdn.jsdelivr.net/npm/@fontsource"):
         if needle in html_raw:
             failures.append(f"index.html: external font or player CDN: {needle}")
@@ -426,6 +449,41 @@ def check_seo(site: Path, index: PageParser) -> list[str]:
         required_types = {"SoftwareApplication", "SoftwareSourceCode", "ScholarlyArticle"}
         if not required_types.issubset(types):
             failures.append("index.html: incomplete JSON-LD graph")
+        forthcoming = next(
+            (
+                node
+                for node in graph
+                if isinstance(node, dict)
+                and node.get("@id") == "https://dseams.info/#dseams-2-paper"
+            ),
+            None,
+        )
+        expected_authors = [
+            ("Rohit Goswami", "https://orcid.org/0000-0002-2393-8056"),
+            ("Amrita Goswami", "https://orcid.org/0000-0001-8706-2383"),
+            ("Ruhila Goswami", "https://orcid.org/0000-0002-5443-9356"),
+            ("Jayant K. Singh", "https://orcid.org/0000-0001-8056-2115"),
+        ]
+        if (
+            forthcoming is None
+            or forthcoming.get("@type") != "ScholarlyArticle"
+            or forthcoming.get("name")
+            != "d-SEAMS 2.0: Incremental ring and cage algorithms for ice structure analysis"
+            or forthcoming.get("creativeWorkStatus") != "Forthcoming"
+            or [
+                (author.get("name"), author.get("@id"))
+                for author in forthcoming.get("author", [])
+            ]
+            != expected_authors
+        ):
+            failures.append("index.html: invalid d-SEAMS 2.0 JSON-LD article")
+        elif any(
+            key in forthcoming
+            for key in ("datePublished", "doi", "isPartOf", "sameAs")
+        ):
+            failures.append(
+                "index.html: forthcoming article must not claim publication metadata"
+            )
     return failures
 
 

@@ -53,7 +53,16 @@
           "https://crates.io/crates/dseams-sys",
           "https://crates.io/crates/linkcell"
         ],
-        "citation": {"@id": "https://doi.org/10.1021/acs.jcim.0c00031"}
+        "author": [
+          {"@id": "https://orcid.org/0000-0002-2393-8056"},
+          {"@id": "https://orcid.org/0000-0001-8706-2383"},
+          {"@id": "https://orcid.org/0000-0002-5443-9356"},
+          {"@id": "https://orcid.org/0000-0001-8056-2115"}
+        ],
+        "citation": [
+          {"@id": "https://dseams.info/#dseams-2-paper"},
+          {"@id": "https://doi.org/10.1021/acs.jcim.0c00031"}
+        ]
       },
       {
         "@type": "SoftwareSourceCode",
@@ -65,7 +74,38 @@
         "runtimePlatform": "Linux, macOS, Windows",
         "license": "https://opensource.org/licenses/MIT",
         "targetProduct": {"@id": "https://dseams.info/#software"},
-        "citation": {"@id": "https://doi.org/10.1021/acs.jcim.0c00031"}
+        "citation": [
+          {"@id": "https://dseams.info/#dseams-2-paper"},
+          {"@id": "https://doi.org/10.1021/acs.jcim.0c00031"}
+        ]
+      },
+      {
+        "@type": "ScholarlyArticle",
+        "@id": "https://dseams.info/#dseams-2-paper",
+        "name": "d-SEAMS 2.0: Incremental ring and cage algorithms for ice structure analysis",
+        "creativeWorkStatus": "Forthcoming",
+        "author": [
+          {
+            "@type": "Person",
+            "@id": "https://orcid.org/0000-0002-2393-8056",
+            "name": "Rohit Goswami"
+          },
+          {
+            "@type": "Person",
+            "@id": "https://orcid.org/0000-0001-8706-2383",
+            "name": "Amrita Goswami"
+          },
+          {
+            "@type": "Person",
+            "@id": "https://orcid.org/0000-0002-5443-9356",
+            "name": "Ruhila Goswami"
+          },
+          {
+            "@type": "Person",
+            "@id": "https://orcid.org/0000-0001-8056-2115",
+            "name": "Jayant K. Singh"
+          }
+        ]
       },
       {
         "@type": "ScholarlyArticle",
@@ -340,8 +380,8 @@ call frame%chill_plus(labels, counts)</code></pre>
                 <a class="book-link" href="https://plumed.dseams.info/">Open PLUMED book</a>
               </div>
               <div class="cmd-row">
-                <pre class="cmd-box"><code>git clone https://github.com/d-SEAMS/dseams-plumed && cd dseams-plumed && pixi run build</code></pre>
-                <button type="button" class="copy-btn" data-copy="git clone https://github.com/d-SEAMS/dseams-plumed && cd dseams-plumed && pixi run build">Copy</button>
+                <pre class="cmd-box"><code>git clone https://github.com/d-SEAMS/dseams-plumed &amp;&amp; cd dseams-plumed &amp;&amp; pixi run build</code></pre>
+                <button type="button" class="copy-btn" data-copy="git clone https://github.com/d-SEAMS/dseams-plumed &amp;&amp; cd dseams-plumed &amp;&amp; pixi run build">Copy</button>
               </div>
               <pre class="code-box"><code>LOAD FILE=./libdseams_plumed.so
 ice: DSEAMS_CAGES ATOMS=1-4096 CUTOFF=3.5 COMPLETE
@@ -483,20 +523,38 @@ phi-c 0.00283286 stack HHHHHHHH....C.</code></pre>
         <div class="cite-primary">
           <p class="eyebrow">Citation &amp; provenance</p>
           <h2>Cite d-SEAMS</h2>
-          <p class="cite-ref">
-            Goswami, R.; Goswami, A.; Singh, J. K.
-            <cite>d-SEAMS: Deferred Structural Elucidation Analysis for Molecular Simulations.</cite>
-            <i>J. Chem. Inf. Model.</i> <b>2020</b>, 60 (4), 2169-2177.
-          </p>
-          <div class="cite-links">
-            <a class="pill-link" href="https://doi.org/10.1021/acs.jcim.0c00031">Digital Object Identifier (DOI): 10.1021/acs.jcim.0c00031</a>
-            <a class="pill-link" href="https://arxiv.org/abs/1909.09830">arXiv:1909.09830</a>
-            <a class="pill-link" href="https://github.com/d-SEAMS/dseams2_repro">Reproducibility archive</a>
-          </div>
-          <div class="bibtex-box">
-            <div class="bibtex-head">
-              <span>BibTeX</span>
-              <button type="button" class="copy-btn" id="copy-bibtex-btn" data-copy="@Article{Goswami2020,
+          <article class="forthcoming-paper" aria-labelledby="dseams-2-heading">
+            <div class="forthcoming-paper-head">
+              <h3 id="dseams-2-heading">d-SEAMS 2.0</h3>
+              <p id="forthcoming-paper-status">Coming soon.</p>
+            </div>
+            <p class="forthcoming-paper-title">
+              <cite>d-SEAMS 2.0: Incremental ring and cage algorithms for ice structure analysis</cite>
+            </p>
+            <p class="forthcoming-paper-authors">
+              <strong>Authors</strong>
+              <a href="https://orcid.org/0000-0002-2393-8056">Rohit Goswami</a>,
+              <a href="https://orcid.org/0000-0001-8706-2383">Amrita Goswami</a>,
+              <a href="https://orcid.org/0000-0002-5443-9356">Ruhila Goswami</a>,
+              <a href="https://orcid.org/0000-0001-8056-2115">Jayant K. Singh</a>
+            </p>
+          </article>
+          <div class="published-reference">
+            <h3>Published reference to cite now</h3>
+            <p class="cite-ref">
+              Goswami, R.; Goswami, A.; Singh, J. K.
+              <cite>d-SEAMS: Deferred Structural Elucidation Analysis for Molecular Simulations.</cite>
+              <i>J. Chem. Inf. Model.</i> <b>2020</b>, 60 (4), 2169-2177.
+            </p>
+            <div class="cite-links">
+              <a class="pill-link" href="https://doi.org/10.1021/acs.jcim.0c00031">Digital Object Identifier (DOI): 10.1021/acs.jcim.0c00031</a>
+              <a class="pill-link" href="https://arxiv.org/abs/1909.09830">arXiv:1909.09830</a>
+              <a class="pill-link" href="https://github.com/d-SEAMS/dseams2_repro">Reproducibility archive</a>
+            </div>
+            <div class="bibtex-box">
+              <div class="bibtex-head">
+                <span>BibTeX</span>
+                <button type="button" class="copy-btn" id="copy-bibtex-btn" data-copy="@Article{Goswami2020,
   author  = {Goswami, Rohit and Goswami, Amrita and Singh, Jayant Kumar},
   title   = {{d-SEAMS}: Deferred Structural Elucidation Analysis for Molecular Simulations},
   journal = {Journal of Chemical Information and Modeling},
@@ -506,8 +564,8 @@ phi-c 0.00283286 stack HHHHHHHH....C.</code></pre>
   pages   = {2169--2177},
   doi     = {10.1021/acs.jcim.0c00031}
 }">Copy BibTeX</button>
-            </div>
-            <pre id="bibtex-code"><code>@Article{Goswami2020,
+              </div>
+              <pre id="bibtex-code"><code>@Article{Goswami2020,
   author  = {Goswami, Rohit and Goswami, Amrita and Singh, Jayant Kumar},
   title   = {{d-SEAMS}: Deferred Structural Elucidation Analysis for Molecular Simulations},
   journal = {Journal of Chemical Information and Modeling},
@@ -517,8 +575,9 @@ phi-c 0.00283286 stack HHHHHHHH....C.</code></pre>
   pages   = {2169--2177},
   doi     = {10.1021/acs.jcim.0c00031}
 }</code></pre>
+            </div>
+            <p class="sr-live" id="copy-status" role="status" aria-live="polite"></p>
           </div>
-          <p class="sr-live" id="copy-status" role="status" aria-live="polite"></p>
         </div>
 
         <aside class="trust-panel" aria-label="Open science records and resources">
