@@ -50,8 +50,7 @@
           "https://github.com/d-SEAMS",
           "https://pypi.org/project/pydseamslib/",
           "https://crates.io/crates/dseams",
-          "https://crates.io/crates/dseams-sys",
-          "https://crates.io/crates/linkcell"
+          "https://crates.io/crates/dseams-sys"
         ],
         "author": [
           {"@id": "https://orcid.org/0000-0002-2393-8056"},
@@ -77,6 +76,21 @@
         "citation": [
           {"@id": "https://dseams.info/#dseams-2-paper"},
           {"@id": "https://doi.org/10.1021/acs.jcim.0c00031"}
+        ]
+      },
+      {
+        "@type": "SoftwareSourceCode",
+        "@id": "https://github.com/d-SEAMS/linkcell",
+        "name": "linkcell",
+        "description": "Periodic linked-cell k-nearest neighbours and cutoff pair lists for orthogonal and triclinic cells.",
+        "url": "https://linkcell.dseams.info/",
+        "codeRepository": "https://github.com/d-SEAMS/linkcell",
+        "programmingLanguage": ["Rust", "C", "C++", "Python"],
+        "runtimePlatform": "Linux, macOS, Windows",
+        "license": "https://opensource.org/licenses/MIT",
+        "sameAs": [
+          "https://crates.io/crates/linkcell",
+          "https://pypi.org/project/linkcell/"
         ]
       },
       {
@@ -146,11 +160,13 @@
       </a>
       <nav class="topbar-nav" aria-label="Primary">
         <a href="#install">Install</a>
+        <a href="#linkcell">Libraries</a>
         <a href="#output">Output</a>
         <a href="#science">Methods</a>
         <details class="docs-dropdown">
           <summary>Docs</summary>
           <div class="docs-menu">
+            <span class="docs-menu-label">Engine &amp; bindings</span>
             <a href="https://docs.dseams.info/">Engine &amp; CLI</a>
             <a href="https://python.dseams.info/">Python</a>
             <a href="https://rust.dseams.info/">Rust</a>
@@ -159,6 +175,7 @@
             <a href="https://lua.dseams.info/">Lua / Fennel</a>
             <a href="https://fortran.dseams.info/">Fortran</a>
             <a href="https://plumed.dseams.info/">PLUMED</a>
+            <span class="docs-menu-label docs-menu-sep">Libraries</span>
             <a href="https://linkcell.dseams.info/">linkcell</a>
           </div>
         </details>
@@ -240,7 +257,7 @@
       <div class="shell">
         <div class="section-head">
           <div>
-            <p class="eyebrow">One engine - Eight install paths</p>
+            <p class="eyebrow">One engine - Seven install paths</p>
             <h2>Install and run in your language</h2>
           </div>
           <p class="section-note">Select a front for its install command, minimal working call, and reference book.</p>
@@ -255,7 +272,6 @@
             <button type="button" role="tab" id="tab-lua" aria-controls="panel-lua" aria-selected="false" class="lang-tab" tabindex="-1">Lua</button>
             <button type="button" role="tab" id="tab-fortran" aria-controls="panel-fortran" aria-selected="false" class="lang-tab" tabindex="-1">Fortran</button>
             <button type="button" role="tab" id="tab-plumed" aria-controls="panel-plumed" aria-selected="false" class="lang-tab" tabindex="-1">PLUMED</button>
-            <button type="button" role="tab" id="tab-linkcell" aria-controls="panel-linkcell" aria-selected="false" class="lang-tab" tabindex="-1">linkcell</button>
           </div>
 
           <div class="lang-panels">
@@ -387,38 +403,108 @@ call frame%chill_plus(labels, counts)</code></pre>
 ice: DSEAMS_CAGES ATOMS=1-4096 CUTOFF=3.5 COMPLETE
 PRINT ARG=ice.nice,ice.nmax,ice.chillice,ice.chillmax STRIDE=100 FILE=ICE</code></pre>
             </article>
-
-            <article class="lang-panel" id="panel-linkcell" role="tabpanel" aria-labelledby="tab-linkcell" hidden>
-              <div class="panel-top">
-                <div>
-                  <h3>Periodic kNN (<code>linkcell</code>)</h3>
-                  <p>Orthogonal and triclinic periodic linked-cell k-nearest neighbours and cutoff pair lists for Rust, C, C++, and Python.</p>
-                </div>
-                <a class="book-link" href="https://linkcell.dseams.info/">Open linkcell book</a>
-              </div>
-              <div class="cmd-row">
-                <pre class="cmd-box"><code>pip install linkcell numpy</code></pre>
-                <button type="button" class="copy-btn" data-copy="pip install linkcell numpy">Copy</button>
-              </div>
-              <pre class="code-box"><code>import linkcell, numpy as np
-xyz = np.array([[0.2, 0.0, 0.0], [9.4, 0.0, 0.0]])
-cell = np.array([10.0, 10.0, 10.0])
-nn, d2 = linkcell.knearest(xyz, cell, 1)</code></pre>
-            </article>
           </div>
         </div>
 
-        <nav class="books-strip" aria-label="Language documentation books">
-          <a href="https://docs.dseams.info/">docs.dseams.info</a>
-          <a href="https://python.dseams.info/">python.dseams.info</a>
-          <a href="https://rust.dseams.info/">rust.dseams.info</a>
-          <a href="https://julia.dseams.info/">julia.dseams.info</a>
-          <a href="https://r.dseams.info/">r.dseams.info</a>
-          <a href="https://lua.dseams.info/">lua.dseams.info</a>
-          <a href="https://fortran.dseams.info/">fortran.dseams.info</a>
-          <a href="https://plumed.dseams.info/">plumed.dseams.info</a>
-          <a href="https://linkcell.dseams.info/">linkcell.dseams.info</a>
+        <nav class="books-strip" aria-label="Documentation books">
+          <div class="books-group">
+            <span class="books-group-label">Engine &amp; bindings</span>
+            <a href="https://docs.dseams.info/">docs.dseams.info</a>
+            <a href="https://python.dseams.info/">python.dseams.info</a>
+            <a href="https://rust.dseams.info/">rust.dseams.info</a>
+            <a href="https://julia.dseams.info/">julia.dseams.info</a>
+            <a href="https://r.dseams.info/">r.dseams.info</a>
+            <a href="https://lua.dseams.info/">lua.dseams.info</a>
+            <a href="https://fortran.dseams.info/">fortran.dseams.info</a>
+            <a href="https://plumed.dseams.info/">plumed.dseams.info</a>
+          </div>
+          <div class="books-group books-group-lib">
+            <span class="books-group-label">Libraries</span>
+            <a href="https://linkcell.dseams.info/">linkcell.dseams.info</a>
+          </div>
         </nav>
+      </div>
+    </section>
+
+    <section class="band band-library" id="linkcell">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Libraries - Standalone neighbour search</p>
+            <h2>linkcell</h2>
+          </div>
+          <p class="section-note">d-SEAMS uses <code>linkcell</code> for neighbour search, but it stands alone as an independent library.</p>
+        </div>
+
+        <article class="library-card">
+          <div class="panel-top">
+            <div>
+              <h3>Periodic kNN and cutoff pair lists (<code>linkcell</code>)</h3>
+              <p>Periodic linked-cell k-nearest neighbours and cutoff pair lists for orthogonal and triclinic cells, in Rust, C, C++, and Python, usable on its own.</p>
+            </div>
+            <a class="book-link" href="https://linkcell.dseams.info/">Open linkcell book</a>
+          </div>
+          <div class="library-cmds">
+            <div class="cmd-row">
+              <pre class="cmd-box"><code>pip install linkcell numpy</code></pre>
+              <button type="button" class="copy-btn" data-copy="pip install linkcell numpy">Copy</button>
+            </div>
+            <div class="cmd-row">
+              <pre class="cmd-box"><code>cargo add linkcell</code></pre>
+              <button type="button" class="copy-btn" data-copy="cargo add linkcell">Copy</button>
+            </div>
+          </div>
+          <pre class="code-box"><code>import linkcell, numpy as np
+xyz = np.array([[0.2, 0.0, 0.0], [9.4, 0.0, 0.0]])
+cell = np.array([10.0, 10.0, 10.0])
+nn, d2 = linkcell.knearest(xyz, cell, 1)</code></pre>
+        </article>
+
+        <article class="library-card library-vesin" aria-labelledby="linkcell-vesin-heading">
+          <div class="panel-top">
+            <div>
+              <h3 id="linkcell-vesin-heading"><code>linkcell</code> and <code>vesin</code></h3>
+              <p><code>linkcell</code> is a drop-in replacement for <a href="https://github.com/Luthaf/vesin">vesin</a> with the same lattice-row and shift <code>S</code> convention, tested directly against <code>vesin</code> in Python (<code>tests/python/test_agree_vesin.py</code>).</p>
+            </div>
+            <div class="vesin-links">
+              <a class="book-link" href="https://linkcell.dseams.info/explanation/mic-and-cells/">Minimum image &amp; cells</a>
+              <a class="book-link" href="https://github.com/Luthaf/vesin">vesin repo</a>
+            </div>
+          </div>
+          <div class="vesin-table-wrap">
+            <table class="vesin-table">
+              <thead>
+                <tr>
+                  <th scope="col">vesin</th>
+                  <th scope="col">linkcell</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Answers who is inside radius <code>r</code>.</td>
+                  <td>Does cutoff pair lists (<code>pairs_within</code>, in the same <code>i, j, S</code> layout), and also answers who are the <code>k</code> nearest with the periodic image without a cutoff by growing shells until the <code>k</code>-th neighbour is certified.</td>
+                </tr>
+                <tr>
+                  <td>Python <code>NeighborList</code> and C <code>libvesin.so</code>.</td>
+                  <td>Python <code>linkcell.NeighborList(cutoff, full_list, ...)</code> returning <code>i, j, P, S, d, D</code>, and C <code>include/linkcell_vesin.h</code> with <code>vesin</code>'s struct layout and <code>lc_vesin_neighbors</code>.</td>
+                </tr>
+                <tr>
+                  <td>Handles non-periodic axes and CUDA devices as well as periodic CPU boxes.</td>
+                  <td>Builds fully periodic CPU lists itself, and forwards a non-periodic axis or a CUDA device to <code>libvesin.so</code> when that library is present.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <pre class="code-box"><code># Swap `from vesin import NeighborList` for:
+from linkcell import NeighborList
+import numpy as np
+
+xyz = np.array([[0.2, 0.0, 0.0], [9.4, 0.0, 0.0]])
+box = np.diag([10.0, 10.0, 10.0])
+i, j, S, d = NeighborList(cutoff=1.5, full_list=True, sorted=True).compute(
+    xyz, box, periodic=True, quantities="ijSd"
+)</code></pre>
+        </article>
       </div>
     </section>
 
@@ -615,17 +701,26 @@ phi-c 0.00283286 stack HHHHHHHH....C.</code></pre>
         </div>
       </div>
       <nav class="foot-links" aria-label="Footer">
-        <a href="https://docs.dseams.info/">Docs</a>
-        <a href="https://python.dseams.info/">Python</a>
-        <a href="https://rust.dseams.info/">Rust</a>
-        <a href="https://julia.dseams.info/">Julia</a>
-        <a href="https://r.dseams.info/">R</a>
-        <a href="https://lua.dseams.info/">Lua</a>
-        <a href="https://fortran.dseams.info/">Fortran</a>
-        <a href="https://plumed.dseams.info/">PLUMED</a>
-        <a href="https://linkcell.dseams.info/">linkcell</a>
-        <a href="https://wiki.dseams.info/">Wiki</a>
-        <a href="https://github.com/d-SEAMS">GitHub</a>
+        <div class="foot-group">
+          <span class="foot-group-label">Engine &amp; bindings</span>
+          <a href="https://docs.dseams.info/">Docs</a>
+          <a href="https://python.dseams.info/">Python</a>
+          <a href="https://rust.dseams.info/">Rust</a>
+          <a href="https://julia.dseams.info/">Julia</a>
+          <a href="https://r.dseams.info/">R</a>
+          <a href="https://lua.dseams.info/">Lua</a>
+          <a href="https://fortran.dseams.info/">Fortran</a>
+          <a href="https://plumed.dseams.info/">PLUMED</a>
+        </div>
+        <div class="foot-group">
+          <span class="foot-group-label">Libraries</span>
+          <a href="https://linkcell.dseams.info/">linkcell</a>
+        </div>
+        <div class="foot-group">
+          <span class="foot-group-label">Project</span>
+          <a href="https://wiki.dseams.info/">Wiki</a>
+          <a href="https://github.com/d-SEAMS">GitHub</a>
+        </div>
       </nav>
     </div>
   </footer>
