@@ -459,6 +459,52 @@ xyz = np.array([[0.2, 0.0, 0.0], [9.4, 0.0, 0.0]])
 cell = np.array([10.0, 10.0, 10.0])
 nn, d2 = linkcell.knearest(xyz, cell, 1)</code></pre>
         </article>
+
+        <article class="library-card library-vesin" aria-labelledby="linkcell-vesin-heading">
+          <div class="panel-top">
+            <div>
+              <h3 id="linkcell-vesin-heading"><code>linkcell</code> and <code>vesin</code></h3>
+              <p><code>linkcell</code> is a drop-in replacement for <a href="https://github.com/Luthaf/vesin">vesin</a> with the same lattice-row and shift <code>S</code> convention, tested directly against <code>vesin</code> in Python (<code>tests/python/test_agree_vesin.py</code>).</p>
+            </div>
+            <div class="vesin-links">
+              <a class="book-link" href="https://linkcell.dseams.info/explanation/mic-and-cells/">Minimum image &amp; cells</a>
+              <a class="book-link" href="https://github.com/Luthaf/vesin">vesin repo</a>
+            </div>
+          </div>
+          <div class="vesin-table-wrap">
+            <table class="vesin-table">
+              <thead>
+                <tr>
+                  <th scope="col">vesin</th>
+                  <th scope="col">linkcell</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Answers who is inside radius <code>r</code>.</td>
+                  <td>Does cutoff pair lists (<code>pairs_within</code>, in the same <code>i, j, S</code> layout), and also answers who are the <code>k</code> nearest with the periodic image without a cutoff by growing shells until the <code>k</code>-th neighbour is certified.</td>
+                </tr>
+                <tr>
+                  <td>Python <code>NeighborList</code> and C <code>libvesin.so</code>.</td>
+                  <td>Python <code>linkcell.NeighborList(cutoff, full_list, ...)</code> returning <code>i, j, P, S, d, D</code>, and C <code>include/linkcell_vesin.h</code> with <code>vesin</code>'s struct layout and <code>lc_vesin_neighbors</code>.</td>
+                </tr>
+                <tr>
+                  <td>Handles non-periodic axes and CUDA devices as well as periodic CPU boxes.</td>
+                  <td>Builds fully periodic CPU lists itself, and forwards a non-periodic axis or a CUDA device to <code>libvesin.so</code> when that library is present.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <pre class="code-box"><code># Swap `from vesin import NeighborList` for:
+from linkcell import NeighborList
+import numpy as np
+
+xyz = np.array([[0.2, 0.0, 0.0], [9.4, 0.0, 0.0]])
+box = np.diag([10.0, 10.0, 10.0])
+i, j, S, d = NeighborList(cutoff=1.5, full_list=True, sorted=True).compute(
+    xyz, box, periodic=True, quantities="ijSd"
+)</code></pre>
+        </article>
       </div>
     </section>
 

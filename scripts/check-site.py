@@ -400,6 +400,10 @@ def check_linkcell_section(source: str) -> list[str]:
         "pip install linkcell numpy",
         "cargo add linkcell",
         "linkcell.knearest",
+        "pairs_within",
+        "NeighborList",
+        "lc_vesin_neighbors",
+        "from linkcell import NeighborList",
     ):
         if needle not in section_text:
             failures.append(f"index.html: #linkcell section missing copy: {needle}")
@@ -408,11 +412,18 @@ def check_linkcell_section(source: str) -> list[str]:
         "triclinic",
         "stands alone",
         "neighbour search",
+        "vesin",
     ):
         if needle not in section_lower:
             failures.append(f"index.html: #linkcell section missing copy: {needle}")
     if not has_href(parsed.linkcell_hrefs, "https://linkcell.dseams.info"):
         failures.append("index.html: #linkcell section missing link to https://linkcell.dseams.info/")
+    if not has_href(parsed.linkcell_hrefs, "https://linkcell.dseams.info/explanation/mic-and-cells"):
+        failures.append(
+            "index.html: #linkcell section missing link to https://linkcell.dseams.info/explanation/mic-and-cells/"
+        )
+    if not has_href(parsed.linkcell_hrefs, "https://github.com/Luthaf/vesin"):
+        failures.append("index.html: #linkcell section missing link to https://github.com/Luthaf/vesin")
     return failures
 
 

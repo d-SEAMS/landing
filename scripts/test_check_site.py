@@ -51,9 +51,13 @@ def _valid_linkcell_section_html() -> str:
         '<p>d-SEAMS uses linkcell for neighbour search, but it stands alone.</p>'
         '<p>Orthogonal and triclinic periodic cells in Rust, C, C++, and Python.</p>'
         '<a href="https://linkcell.dseams.info/">Open linkcell book</a>'
+        '<a href="https://linkcell.dseams.info/explanation/mic-and-cells/">Minimum image &amp; cells</a>'
+        '<a href="https://github.com/Luthaf/vesin">vesin repo</a>'
         '<code>pip install linkcell numpy</code>'
         '<code>cargo add linkcell</code>'
         '<code>nn, d2 = linkcell.knearest(xyz, cell, 1)</code>'
+        '<p>Drop-in replacement for vesin with pairs_within, NeighborList, and lc_vesin_neighbors.</p>'
+        '<code>from linkcell import NeighborList</code>'
         '</section>'
     )
 
@@ -133,6 +137,32 @@ class LinkcellSectionTests(unittest.TestCase):
     def test_case_insensitive_orthogonal_check_preserved(self) -> None:
         html = _valid_linkcell_section_html().replace("Orthogonal", "orthogonal")
         self.assertEqual(CHECK_SITE.check_linkcell_section(html), [])
+
+    def test_requires_vesin_links_and_note(self) -> None:
+        no_vesin_repo = _valid_linkcell_section_html().replace(
+            '<a href="https://github.com/Luthaf/vesin">vesin repo</a>',
+            '',
+        )
+        self.assertIn(
+            "index.html: #linkcell section missing link to https://github.com/Luthaf/vesin",
+            CHECK_SITE.check_linkcell_section(no_vesin_repo),
+        )
+        no_mic_link = _valid_linkcell_section_html().replace(
+            '<a href="https://linkcell.dseams.info/explanation/mic-and-cells/">Minimum image &amp; cells</a>',
+            '',
+        )
+        self.assertIn(
+            "index.html: #linkcell section missing link to https://linkcell.dseams.info/explanation/mic-and-cells/",
+            CHECK_SITE.check_linkcell_section(no_mic_link),
+        )
+        no_swap = _valid_linkcell_section_html().replace(
+            '<code>from linkcell import NeighborList</code>',
+            '',
+        )
+        self.assertIn(
+            "index.html: #linkcell section missing copy: from linkcell import NeighborList",
+            CHECK_SITE.check_linkcell_section(no_swap),
+        )
 
 
 class LibraryGroupingTests(unittest.TestCase):
