@@ -19,12 +19,12 @@
       "label": "Rust",
       "page_command": "cargo add dseams --features bundled",
       "command": "cargo add dseams --features bundled",
-      "version": "2.14.0",
+      "version": "2.14.1",
       "book": "https://rust.dseams.info/",
       "registry": {
         "kind": "crates",
         "name": "dseams",
-        "version": "2.14.0"
+        "version": "2.14.1"
       },
       "live": true
     },
@@ -87,12 +87,12 @@
       "label": "PLUMED",
       "page_command": "pixi run build",
       "command": "pixi run build",
-      "version": "0.4.0",
+      "version": "0.4.1",
       "book": "https://plumed.dseams.info/",
       "registry": {
         "kind": "github_tag",
         "name": "dseams-plumed",
-        "version": "v0.4.0"
+        "version": "v0.4.1"
       },
       "live": false
     },
@@ -101,12 +101,12 @@
       "label": "CLI / C++",
       "page_command": "pixi run build",
       "command": "pixi run build",
-      "version": "2.14.0",
+      "version": "2.14.1",
       "book": "https://docs.dseams.info/",
       "registry": {
         "kind": "github_tag",
         "name": "seams-core",
-        "version": "v2.14.0"
+        "version": "v2.14.1"
       },
       "live": true
     },
