@@ -1,8 +1,9 @@
 # dseams.info
 
 Static landing page for [d-SEAMS](https://dseams.info/), deployed from
-this repository. No external CDNs, no third-party fonts, and no tracking
-scripts.
+this repository. [DEPLOY.md](DEPLOY.md) is how that publish works, and
+what to run when Actions is queued. No external CDNs, no third-party
+fonts, and no tracking scripts.
 
 The page introduces the `seams-core` ice, clathrate, and ring topology
 engine with an interactive raw-versus-CHILL+ interface comparison,
