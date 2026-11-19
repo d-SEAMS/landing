@@ -464,7 +464,7 @@ nn, d2 = linkcell.knearest(xyz, cell, 1)</code></pre>
           <div class="panel-top">
             <div>
               <h3 id="linkcell-vesin-heading"><code>linkcell</code> and <code>vesin</code></h3>
-              <p><code>linkcell</code> is a drop-in replacement for <a href="https://github.com/Luthaf/vesin">vesin</a> with the same lattice-row and shift <code>S</code> convention, tested directly against <code>vesin</code> in Python (<code>tests/python/test_agree_vesin.py</code>).</p>
+              <p><code>linkcell</code> is a drop-in replacement for <a href="https://github.com/Luthaf/vesin">vesin</a> with the same <code>i</code>, <code>j</code>, <code>S</code> layout. <code>NeighborList.compute</code> takes <code>points</code>, the cell, <code>periodic</code>, and <code>quantities</code>.</p>
             </div>
             <div class="vesin-links">
               <a class="book-link" href="https://linkcell.dseams.info/explanation/mic-and-cells/">Minimum image &amp; cells</a>

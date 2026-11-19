@@ -9,8 +9,8 @@ engine with an interactive raw-versus-CHILL+ interface comparison,
 install tabs and documentation links across Python (`pydseamslib`),
 CLI / C++ (`seams-core`), Rust (`dseams`), Julia (`Dseams.jl`), R
 (`dseams-r`), Lua (`yodaStruct`), Fortran (`dseams-fortran`), and PLUMED
-(`dseams-plumed`), a standalone `linkcell` library section, real CLI outputs paired with Cycles
-renders, and citation metadata for
+(`dseams-plumed`), a standalone `linkcell` library section, real CLI
+outputs paired with Cycles renders, and citation metadata for
 [doi:10.1021/acs.jcim.0c00031](https://doi.org/10.1021/acs.jcim.0c00031).
 
 ## Check the site
